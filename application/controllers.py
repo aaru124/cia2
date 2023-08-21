@@ -9,7 +9,7 @@ import json
 
 @app.route('/')
 def welcome():
-    return render_template("welcome.html")
+    return render_template("trial.html")
     
 
 @app.route('/home', methods=["GET","POST"])
