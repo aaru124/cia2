@@ -1,5 +1,7 @@
-from flask import render_template, request, session, redirect
+from flask import jsonify, render_template, request, session, redirect
 from flask import current_app as app
+import razorpay
+import stripe
 from application.models import User, db, Store_Category, Product, Purchase, Order
 import re
 import json
@@ -7,7 +9,7 @@ import json
 
 @app.route('/')
 def welcome():
-    return render_template("main.html")
+    return render_template("welcome.html")
     
 
 @app.route('/home', methods=["GET","POST"])
@@ -489,3 +491,18 @@ def search(val):
         return redirect("/home/search/<val>")
 
     return render_template("home.html")  
+
+'''razorpay_client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
+@app.route('/create_order', methods=['POST'])
+def create_order():
+    # Get the order amount from the frontend
+    order_amount = int(request.form['order_amount']) * 100  # Convert to paise
+
+    # Create a Razorpay order
+    order = razorpay_client.order.create({
+        'amount': order_amount,
+        'currency': 'INR',
+        'payment_capture': '1'  # Auto-capture payment
+    })
+    print('success')
+    print(order)'''

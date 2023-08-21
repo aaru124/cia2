@@ -40,56 +40,53 @@
         </tbody>
       </table>
       {% if total==0 %} <h4 style="color: red;"> No products :/</h4> {% endif %}
-      {% if total!=0 %}<h6 style="margin-left: 900px" class="mt-4">Total Price: Rs.<span id="totalPrice">{{ total }}</span></h6>
-      <button style="margin-left: 900px" type="button" class="btn btn-success mt-1" onclick="openPayment()">Buy Now</button>{% endif %}
+      {% if total!=0 %}<h6 style="margin-left: 900px" class="mt-4" >Total Price: Rs.<span id="totalPrice" value="{{total}}">{{ total }}</span></h6>
+      <button style="margin-left: 900px" type="button" class="btn btn-success mt-1" id="pay-button">Pay Now</button>{% endif %}
     </form>
   </div>
 
-  <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Add Category</h5>
-               
-            </div>
-            <div class="modal-body">
-                <form id="categoryForm" method="post">
-                    <div class="form-group">
-                      <label>
-                        <input type="radio" name="paymentOption" value="debit_card">
-                        Debit Card
-                    </label><br>
-                    <label>
-                        <input type="radio" name="paymentOption" value="credit_card">
-                        Credit Card
-                    </label><br>
-                    <label>
-                        <input type="radio" name="paymentOption" value="upi">
-                        UPI
-                    </label><br>
-                    <label>
-                        <input type="radio" name="paymentOption" value="cash_on_delivery">
-                        Cash on Delivery
-                    </label><br>
-                    </div>               
-                </form>
-            </div>
-            <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" form="categoryForm" name="paymentOption" >Choose Option</button>
-            </div>
+  
 
-        </div>
-    </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
-  
-  <script>
-    function openPayment() {            
-        $('#paymentModal').modal('show');
-    }
-      
-</script>
+
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var spanElement = document.getElementById("totalPrice");
+        var spanValue = spanElement.innerHTML;
+        var t= parseInt(spanValue);
+        $(document).ready(function() {
+            $('#pay-button').click(function() {
+                var options = {
+                    key: 'rzp_test_XOy0arNBRKuF4z',
+                    amount: t*100,  // Amount in paise (e.g., 10000 paise = INR 100)
+                    currency: 'INR',
+                    name: 'AeroStride',
+                    description: 'Sneaker',
+                    image: './static/logo.png',
+                    theme: {
+        color: '#FF6F61' // Set your desired theme color
+    },
+                    
+                    order_id: '',  // Generate an order ID from your backend
+                    handler: function(response) {
+                        // Handle payment success, response will contain payment details
+                        console.log(response);
+                        window.location.replace("/thank-you");
+                    },
+                    prefill: {
+                        name: 'John Doe',
+                        email: 'johndoe@gmail.com',
+                        contact: '+919876543210'
+                    }
+                };
+
+                var rzp = new Razorpay(options);
+                rzp.open();
+            });
+        });
+    </script>
   </body>
 </html>

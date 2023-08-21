@@ -1,5 +1,6 @@
 
 from flask import Flask as f
+import razorpay
 from application.database import db
 from flask_migrate import Migrate
 from flask_admin import Admin
@@ -9,10 +10,11 @@ import stripe
 
 def create_app():
     app = f(__name__,template_folder='template',static_url_path='/static',static_folder='static')
-    stripe.api_key = 'sk_test_51NhU8KSD25c7XMJIL1FGpIKixd5X2EP11u7zVUxY69wOY8O3p2uuynkoVC23ZwSsXuEtUbLveFjGAAGFPpncJRKd00U3ssaK6G'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = "abcd234"
+
+    razorpay_client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
 
     db.init_app(app)
 
