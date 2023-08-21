@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Management</title>
+    <style>
+        .button-length{
+            width: 305px;
+        }
+       
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Product Management</h1>
+        <a href="/store-manager" type="submit" class="btn btn-secondary mt-4 mb-3" style=" font-size: 10;">Go Back to Store Manager Page</a>
+        <div class="row mt-4">  
+              {% if error1 %}<h6 style="color: rgb(82, 16, 16);">{{error1}}<a href="/store-manager/category"> Please add a category</a></h6>{% endif %}
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Actions
+                    </div>
+                    <div class="card-body">
+                        <div class="mt-4 mb-2">
+                            <a href="/store-manager/product/add" class="btn btn-success btn-block button-length">+ Add Product</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        Product Information
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row mt-4">
+                            {% for i in prod %}
+                            
+                            <div class="col-md-4">
+                                <div class="card">
+                                    {% set img_name = i.id %}
+                                    <img src="{{url_for('static', filename='products/'+img_name|string+'.png')}}" class="card-img-top" alt="Product Image" height="150px" width="200px">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;" >{{i.name}}</span> </h5>
+                                        <a style="margin-left:15%" class="btn btn-secondary btn-sm" href="/store-manager/product/edit_{{i.id}}" data-toggle="modal" data-target="#editCategoryModal">
+                                            <i class="fa fa-edit"></i> 
+                                        </a>
+                                   
+                                        <a class="btn btn-danger btn-sm" href="/store-manager/product/delete_{{i.id}}" data-toggle="modal" data-target="#deleteModal">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                        {% if error_id==i.id%}
+                                        <p class="card-text"> <span style="font-size: small; color:red" >{{error}}</span></p>{% endif %}
+                                        <p class="card-text"> <span style="font-weight: bolder;" >Manufacturing Date:</span>{{i.manufacturing_date}}</p>
+                                        <p class="card-text"><span style="font-weight: bolder;" >Rate/{{i.unit}}:</span> {{i.rate}}</p>
+                                        <p class="card-text"><span style="font-weight: bolder;" >Stock:</span>{{i.stock}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if delete=="yes" %}
+    <div class="modal fade show" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="categoryForm" method="post">
+                        <div class="form-group">
+                            <label>Are you sure you want to delete the product?</label>
+                            <button type="submit" class="btn btn-secondary" name="no" >No</button>
+                            <button type="submit" class="btn btn-secondary" name="yes">Yes</button>
+                        </div>               
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  
+</body>
+</html>

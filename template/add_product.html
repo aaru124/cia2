@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body{
+        background-color: rgb(194, 221, 222);
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Add Product</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <input class="form-control" type="file" name="img" placeholder="Upload Image" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="product_name">Product Name</label>
+                <input type="text" class="form-control" id="product_name" name="product_name" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="rate">Rate per Unit</label>
+                <input type="number" class="form-control" id="rate" name="rate" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="unit">Unit (kg,g,L,etc..)</label>
+                <input type="text" class="form-control" id="unit" name="unit" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Stock</label>
+                <input type="number" class="form-control" id="stock" name="stock" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="description">Description (Mention best before, etc..)</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group mt-4">
+                <label for="manufacturing_date">Manufacturing Date</label>
+                <input type="date" class="form-control" id="manufacturing_date" name="manufacturing_date" required>
+            </div>
+            <div class="form-group mt-4">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category" required>
+                    {% for i in cat %}
+                    <option value="{{i.name}}">{{i.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+           
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+</body>
+</html>

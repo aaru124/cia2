@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhimsiStore</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body style="background-color: rgb(191, 227, 187);">
+
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(1, 25, 1);">
+    <a class="navbar-brand" href="/home" style="margin-left: 5%;color: rgb(207, 231, 195);">WhimsiMart</a>
+    
+    <ul class="navbar-nav ml-auto" >
+        <li class="nav-item dropdown" style="margin-left: 50px;">
+            <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(207, 231, 195);">
+              Category
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {% for i in cat %}
+              <a class="dropdown-item" href="/home/{{i.name}}">{{i.name}}</a>
+              {% endfor %}
+              <a class="dropdown-item" href="/home">All</a>
+              
+            </div>
+          </li>
+        <li class="nav-item" style="margin-left: 450px; color: rgb(207, 231, 195);">
+            <a class="nav-link"  href="/cart" style="color: rgb(207, 231, 195);">Cart<i class="fas fa-shopping-cart"></i></a>
+        </li>
+       <li class="nav-item" style="color: rgb(207, 231, 195);"></li><li class="nav-item"></li>
+        <li class="nav-item" style="color: rgb(207, 231, 195);">
+            <a class="nav-link" href="/logout" style="color: rgb(207, 231, 195);">Logout</a>
+        </li>
+       
+        <li style="display: inline;" class="nav-item" >
+            <input class="form-control mr-sm-2" type="search" title="Search by name, mfg date, price, category.." placeholder="Search by name, mfg date..." aria-label="Search by name, mfg date..." name="search_val" style="display: inline;" id="inputBox">
+           
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-success my-2 my-sm-0" id="anchorTag"><i class="fas fa-search"></i></a>
+        </li>
+
+        
+    </ul>
+</nav>
+{% if error1 %}<h6 style="color: rgb(90, 9, 9);margin-left: 5%;margin-top: 2%;">{{error1}}</h6>{% endif %}
+
+{% if error %}<h6 style="color: rgb(84, 6, 6);margin-left: 5%;">{{error}} <a href="/user-login"> Go to User Login Page</a></h6>{% endif %}
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col-md-8" style="color: darkgreen; margin-left: 0%; font-family: 'Times New Roman', Times, serif; font-size: 25px;">Welcome {{user}}!</div>
+        <div class="col-md-4">
+            <form method="post">
+                <div class="text-center" style="margin-left: 220px;">
+                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseBox" style="background-color: darkslategrey;color:cornsilk">
+                        Apply Filters
+                     </button>
+                </div>
+               
+             
+                 <div class="collapse" id="collapseBox" >
+                     <div class="filter-card">
+     
+                         <div class="card-body">
+                             <table class="table" style="width: 200px; margin: 0;">
+                                 <tbody>
+                                     <tr align="left">
+                                         <td>
+                                             <label for="price" style="width: 100px;">Price Range</label>
+                                         </td>
+                                         <td>:</td>
+                                         <td>
+                                             <input type="number" style="margin: 0; width: 100px;" name="min_price" placeholder="Min-Price" value="{{ min_price }}">
+                                         </td>
+                                         <td>-</td>
+                                         <td>
+                                             <input type="number"  style="margin: 0; width: 100px;" name="max_price" placeholder="Max-Price" value="{{ max_price }}">
+                                         </td>
+                                     </tr>
+                                     <tr align="left" >
+                                        <td colspan="2">
+                                            <button class="btn btn-success" type="submit" name="min_price">
+                                                Apply
+                                             </button>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                     </tr>
+                                     
+                                 </tbody>
+                             </table>
+            </form>
+            
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+    <div class="row">
+       
+        <div class="col-md-12">
+            {% if search_name %}<div class ="row mb-3"> <p>Showing results in "<span style="font-weight: bold;">{{search_name}}</span>"</p> </div>{% endif %}
+            {% if filter_name %}<div class ="row mb-3"> <h3>{{filter_name}}</h3> </div>{% endif %}
+            <div class="row">
+                {% if not prod %} <p style="margin-left: 2px;">No products available right now.</p> {% endif %}
+
+                {% for i in prod %}
+
+                <div class="col-md-4">
+                    <div class="card" style="height: 400px;">
+                        {% set img_name=i.id %}
+                        <img src="{{url_for('static', filename='products/'+img_name|string+'.png')}}" class="card-img-top" alt="Product Image" height="250px" width="250px">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;" >{{i.name}}</span> </h5>
+                                </div>
+                                <div class="col-md-5">
+                                    <p class="card-text" style="display: inline; font-size: 12px;">Mfg. date: {{i.manufacturing_date}}</p>
+                                </div>
+                            </div>
+                           
+                            
+                            <p class="card-text" style="font-size: 10px;">{{i.category_name}}</p>
+                           
+                            <p class="card-text">{{i.description}}</p>
+                            
+                        </div>
+                    </div>
+                    <form method="post">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text">₹</span>
+                          <span class="input-group-text">{{i.rate}}</span>
+
+                          <input type="number" type="text" class="form-control" placeholder="Quantity" name="count" required>
+                          {% if i.stock==0 %}
+                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);" disabled>Out of Stock</button>
+                          {% else %}
+                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);">Add to Cart</button>
+                          {% endif %}
+                        </div>
+                    </form>
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+   
+    const inputBox = document.getElementById('inputBox');
+    const anchorTag = document.getElementById('anchorTag');
+
+    inputBox.addEventListener('input', () => {
+    anchorTag.href=`/home/search/${inputBox.value}`;
+  });
+    
+  
+    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <style>
+        .center-container {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           min-height: 100vh;                 
+        }
+        .background{
+        background-color: rgb(194, 221, 222);
+      }
+      .login{
+
+        margin-left: auto;
+        margin-right: auto;
+        
+      }
+      .custom-btn {
+            width: 300px;
+            background-color: #006400; /* Dark green color */
+        }
+        
+        .flippable {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .flipped {
+            transform: scaleX(-1);
+        }
+      
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body class="background">
+    <div class="container center-container">
+        <div class="col-md-6 login">
+            <h1>Welcome to the <span style="color: rgb(38, 78, 64);" class="flippable" onmouseover="flipText(this)" onmouseout="unflipText(this)">WhimsiMart</span>! </h1>
+          
+                <div class="col-md-6 mt-4 login">
+                    <a href="admin-register" class="btn btn-success btn-block custom-btn">Login as a Store Manager</a><br><br>
+                    <a href="user-register" class="btn btn-success btn-block custom-btn">Login as a User</a>
+                </div>
+ 
+
+            
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script>
+        function flipText(element) {
+            element.classList.add("flipped");
+        }
+
+        function unflipText(element) {
+            element.classList.remove("flipped");
+        }
+    </script>
+</body>
+</html>
