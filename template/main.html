@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee</title>
+    <title>AeroStride</title>
 
    
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
@@ -17,7 +19,23 @@
   
     <link rel="stylesheet" href="style_main.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+        
+        @font-face {
+    font-family: 'CustomFont';
+    src: url("../static/fonts/TAN-NIMBUS.ttf") format('truetype'); /* Replace with actual font file path */
+}
+
+/* Apply the custom font to specific elements */
+.custom-font {
+    font-family: 'CustomFont', sans-serif;
+    text-align: center;
+    padding-top: 5%;
+    padding-bottom: 3%;
+    /* You can also specify font size, color, etc. here */
+}
+ 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
 
 :root {
     --main-color: #443;
@@ -70,17 +88,7 @@ section {
     font-size: 3rem;
 }
 
-.btn {
-    display: inline-block;
-    padding: .9rem 1.5rem;
-    border: var(--border);
-    border-radius: var(--border-radius);
-    color: var(--main-color);
-    background: none;
-    cursor: pointer;
-    margin-top: 1rem;
-    font-size: 1.7rem;
-}
+
 
 .btn:hover {
     border-radius: var(--border-radius-hover);
@@ -531,41 +539,21 @@ section {
         width: 100%;
     }
 }
+
+.gradient-background {
+        background: linear-gradient(45deg, #FFDAB9, #FFA500, #800080);
+      }
     </style>
 
 </head>
 
-<body>
-
+<body class="gradient-background">
     
-    <header class="header">
-        <div id="menu-btn" class="fas fa-bars"></div>
-
-        <a href="#" class="logo">sneakers</a>
-
-        <nav class="navbar">
-            <a href="#home">home</a>
-            <a href="#about">about</a>
-            <a href="#menu">products</a>
-            <a href="#review">review</a>
-            <a href="#book">buy</a>
-        </nav>
-        <div style="align-items: flex">
-            <a href="#" class="btn">Sign in</a>
-            <a href="#" class="btn">Sign up</a>
-        </div>
         
-    </header>
+    {% include 'navbar.html' %}
+        
 
-    <section class="home" id="home">
-        <div class="row">
-            <div class="content" style="text-align: center;">
-                <h3>SNEAKERS!</h3>
-                <a href="#" class="btn">browse</a>
-            </div>
-        </div>
-
-        <div class="slider">
+        <!--<div class="slider">
             <div class="photos">
                 <img src="image/img-1.jpeg" class="shown">
                 <img src="image/img-2.jepg">
@@ -574,13 +562,88 @@ section {
                     <div class="next"></div>
                 </div>
             </div>
-        </div>
-
+        </div>-->
+        <section class="product " id="product">
+            <h1 class="custom-font">POPULAR PRODUCTS</h1>
         
-    </section>
+            <div class="box-container">
+                <a href="#" class="box"  style="text-decoration: none;">
+                    <img src="../static/products/2.png" alt="" style="margin-left: 10%;">
+                    <div class="content" >
+                        <h3>SNEAKER 1</h3>
+                        <p>abc</p>
+                        <span>$50</span>
+                    </div>
+                </a>
+    
+                <a href="#" class="box"  style="text-decoration: none;">
+                    <img src="../static/products/2.png" alt="" style="margin-left: 10%;">
+                    <div class="content" >
+                        <h3>SNEAKER 1</h3>
+                        <p>abc</p>
+                        <span>$50</span>
+                    </div>
+                </a>
+    
+         </div>
+
+         <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupons</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="coupon1.jpg" class="card-img-top" alt="Coupon 1">
+                    <div class="card-body">
+                        <h5 class="card-title">25% Off</h5>
+                        <p class="card-text">Use code: SAVE25</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="coupon2.jpg" class="card-img-top" alt="Coupon 2">
+                    <div class="card-body">
+                        <h5 class="card-title">$10 Off</h5>
+                        <p class="card-text">Use code: DISCOUNT10</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img src="coupon3.jpg" class="card-img-top" alt="Coupon 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Free Shipping</h5>
+                        <p class="card-text">Use code: FREESHIP</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
+
 
     <section class="about" id="about">
-        <h1 class="heading">about us</h1>
+        <h1 class="custom-font">ABOUT US</h1>
 
         <div class="row">
             <div class="image">
@@ -596,129 +659,143 @@ section {
         </div>
     </section>
 
-    <section class="product" id="product">
-        <h1 class="heading">POPULAR PRODUCTS</h1>
-
-        <div class="box-container">
-            <a href="#" class="box">
-                <img src="image/prod-1.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 1</h3>
-                    <p>abc</p>
-                    <span>$50</span>
-                </div>
-            </a>
-
-            <a href="#" class="box">
-                <img src="image/prod-2.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 2</h3>
-                    <p>abc</p>
-                    <span>$60</span>
-                </div>
-            </a>
-
-            <a href="#" class="box">
-                <img src="image/prod-3.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 3</h3>
-                    <p>abc</p>
-                    <span>$50</span>
-                </div>
-            </a>
-
-            <a href="#" class="box">
-                <img src="image/prod-4.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 4</h3>
-                    <p>abc</p>
-                    <span>$50</span>
-                </div>
-            </a>
-
-            <a href="#" class="box">
-                <img src="image/prod-5.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 5</h3>
-                    <p>abc</p>
-                    <span>$60</span>
-                </div>
-            </a>
-
-            <a href="#" class="box">
-                <img src="image/prod-6.png" alt="">
-                <div class="content">
-                    <h3>SNEAKER 6</h3>
-                    <p>abc</p>
-                    <span>$60</span>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section class="review" id="review">
-        <h1 class="heading">reviews</h1>
-
-                <i class="fas fa-quote-left"></i>
-                    <i class="fas fa-quote-right"></i>
-                    <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p>asdfghjkl</p>
-                    <h3>abc</h3>
-                    <span>satisfied client</span>
-            
-    </section>
-
-\    <section class="footer">
-        <div class="box-container">
-            <div class="box">
-                <h3>our branches</h3>
-                <a href="#"><i class="fas fa-arrow-right"></i> india</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> USA</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> france</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> africa</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> japan</a>
-            </div>
-
-
-            <div class="box">
-                <h3>contact info</h3>
-                <a href="#"><i class="fas fa-phone"></i> +123-456-7890</a>
-                <a href="#"><i class="fas fa-phone"></i> +111-222-3333</a>
-                <a href="#"><i class="fas fa-envelope"></i> sneakerse@gmail.com</a>
-                <a href="#"><i class="fas fa-envelope"></i> india</a>
-            </div>
-
-            <div class="box">
-                <h3>contact info</h3>
-                <a href="#"><i class="fab fa-facebook-f"></i> facebook</a>
-                <a href="#"><i class="fab fa-twitter"></i> twitter</a>
-                <a href="#"><i class="fab fa-instagram"></i> instagram</a>
-                <a href="#"><i class="fab fa-linkedin"></i> linkedin</a>
-                <a href="#"><i class="fab fa-twitter"></i> twitter</a>
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
     
+
+
+       
+
+
+    <div class="container mt-5">
+        <h1 class="custom-font">TESTIMONIALS</h1>
+        <div id="testimonialsCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                               
+                                
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                    commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+                                    parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
+                                    
+                                <h5>John Doe</h5>
+                                <p>CEO, Company Name</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                    commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+                                    parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
+                                <h5>Jane Smith</h5>
+                                <p>Designer, Design Studio</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                    commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+                                    parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
+                                <h5>Michael Johnson</h5>
+                                <p>Marketing Manager, Marketing Agency</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                    commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
+                                    parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
+                                <h5>Amy Brown</h5>
+                                <p>Manager, Retail Store</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#testimonialsCarousel" role="button" data-slide="prev" style="margin-left: -10%;color:black;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#testimonialsCarousel" role="button" data-slide="next" style="margin-right: -10%; color: black;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <div class=" py-5 mt-4" style="background-color: #443; color: beige;padding: 0%;">
+        <div class="container">
+            <div class="row " style="margin-left:15%;">
+                <div class="col-md-4">
+                    <h4 style="font-weight: bold;margin-bottom: 5%">Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, City, Country</p>
+                    <p><i class="fas fa-phone"></i> +1-123-456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@example.com</p>
+                </div>
+                <div class="col-md-4">
+                    <h4 style="font-weight: bold;margin-bottom: 5%;text-decoration: none;">Social Media</h4>
+                    <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a><br>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a><br>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a><br>
+                    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a><br>
+                </div>
+                <div class="col-md-4">
+                    <h4 style="font-weight: bold;margin-bottom: 5%">Branches</h4>
+                    
+
+                    <p><i class="fas fa-map-marker-alt"></i> India: 456 Street, City, Country</p>
+                    <p><i class="fas fa-map-marker-alt"></i> USA: 789 Avenue, City, Country</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Europe: 123 Boulevard, City, Country</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="script.js"></script>
+
+   
 
 </body>
 

@@ -2,15 +2,23 @@ from flask import jsonify, render_template, request, session, redirect
 from flask import current_app as app
 import razorpay
 import stripe
-from application.models import User, db, Store_Category, Product, Purchase, Order
+from application.models import User, db, Product, Purchase, Order
 import re
 import json
 
 
 @app.route('/')
 def welcome():
-    return render_template("trial.html")
     
+    if "user" not in session:
+        return render_template("main.html",var="Sign in / Sign up",var1="/user-login")
+    if "user" in session:
+        print("hey in session")
+        return render_template("main.html",var="Logout" ,var1="/logout")
+    return render_template("main.html",var="Sign in / Sign up",var1="/user-login")
+    
+
+
 
 @app.route('/home', methods=["GET","POST"])
 def home():
@@ -22,17 +30,12 @@ def home():
             max=i.rate
     if request.method=="GET":
         prod= Product.query.all()
-        cat = Store_Category.query.all()
+        
         
         return render_template('home.html',prod=prod, cat=cat, max=max, user=session["user"])
     
     if request.method=="POST":
-        cat = Store_Category.query.all()
-        if "category" in request.form:
-            
-            if request.form["category"]!=" ":
-                filter= Product.query.filter_by(category_name = request.form["category"])
-                return render_template('home.html',prod=filter, cat=cat, filter_name=request.form["category"])
+
         if "product" in request.form and "user" in session:
            
             product_id= request.form["product"]
@@ -116,6 +119,11 @@ def user_register():
     elif request.method=='POST':
         username = request.form['username']
         password = request.form['password']
+        address = request.form['address']
+        phone = request.form['phone']
+        email = request.form['email']
+        postal_code = request.form['zip']
+
         
         user_pattern = r'^[A-Za-z0-9]+$'  
         pass_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$'
@@ -132,12 +140,12 @@ def user_register():
         if errors:
             return render_template("user_register.html",error=errors)
         else:
-            user = User(name = username, password = password)
+            user = User(name = username, password = password,contact_no = phone, address=address, postal_code=postal_code,email=email)
             db.session.add(user)
             db.session.commit()
             session["user"] = username
             session["cart"]=json.dumps(dict())
-            return redirect("/home")
+            return redirect("/")
         
                 
                
@@ -155,7 +163,7 @@ def user_login():
         if user is not None and user.admin==False and password==user.password:
             session["user"]=username
             session["cart"]=json.dumps(dict())
-            return redirect("/home")
+            return redirect("/")
         
         elif user is None or user.admin:
             errors['no_user']="User is not present in the system."
@@ -198,71 +206,7 @@ def admin_login():
 def store_manager():
     return render_template("store_manager.html")
 
-@app.route("/store-manager/category", methods=["GET","POST"])
-def category():
-    category = Store_Category.query.all()
-    user=session["user"]
-    user = User.query.filter_by(name = user).first()
-    if request.method=="GET":
-        return render_template("category.html", cat=category, delete="no",edit="no")
-    if request.method=="POST" and user.admin:
-        if request.form['name']:
-            name=request.form['name']
-            category = Store_Category(name = name)
-            db.session.add(category)
-            db.session.commit()
-            return redirect("/store-manager/category")
-        elif request.form['editName']:
-            name=request.form['name']
-            category = Store_Category(name = name)
-            db.session.add(category)
-            db.session.commit()
-            return redirect("/store-manager/category")
-        else:
-            return redirect("/store-manager/category")
 
-        
-@app.route("/store-manager/category/delete_<cat_id>", methods=["GET","POST"])
-def delete_category(cat_id):
-    p=int(cat_id)
-    category = Store_Category.query.all()
-    user=session["user"]
-    user = User.query.filter_by(name = user).first()
-    if request.method=="GET":
-        return render_template("category.html",cat=category,delete="yes",edit="no")
-    if request.method=="POST" and user.admin:
-        if "yes" in request.form:
-            category_del = Store_Category.query.filter_by(id = p).first()
-            prod_del = Product.query.filter_by(category_name=category_del.name)
-            for i in prod_del:
-                db.session.delete(i)
-            db.session.delete(category_del)
-            db.session.commit()
-            return redirect("/store-manager/category")
-        
-        if "no" in request.form:
-            return redirect("/store-manager/category")
-        
-@app.route("/store-manager/category/edit_<cat_id>", methods=["GET","POST"])
-def edit_category(cat_id):
-    p=int(cat_id)
-    category = Store_Category.query.all()
-    user=session["user"]
-    user = User.query.filter_by(name = user).first()
-    if request.method=="GET":
-        return render_template("category.html",cat=category,edit="yes", delete="no")
-    
-    if request.method=="POST" and user.admin:
-        if request.form["editName"]:
-            category_edit = Store_Category.query.filter_by(id = p).first()
-            newName= request.form["editName"]
-            if newName:
-                category_edit.name=newName
-            db.session.commit()
-            return redirect("/store-manager/category")
-        else:
-            return redirect("/store-manager/category")
-    return redirect("/store-manager/category")
 @app.route("/store-manager/product")
 def product():
     prod = Product.query.all()
@@ -273,7 +217,7 @@ def product():
 def add_product():
     if request.method=="GET" and "user" in session:
         user=User.query.filter_by(admin = True)
-        cat=Store_Category.query.all()
+        
         prod=Product.query.all()
         cat_n=[]
         for i in cat:
@@ -289,13 +233,21 @@ def add_product():
             if request.method == "POST":
                 name = request.form["product_name"]
                 description = request.form["description"]
-                stock = request.form["stock"]
-                rate = request.form["rate"]
-                unit = request.form["unit"]
+                brand = request.form["brand"]
+                gender = request.form["gender"]
+                discount = request.form["discount"]
+                s36 = request.form["size_36"]
+                s37 = request.form["size_37"]
+                s38 = request.form["size_38"]
+                s39 = request.form["size_39"]
+                s40 = request.form["size_40"]
+                s41 = request.form["size_41"]
+                s42 = request.form["size_42"]
+                rate = request.form["price"]
                 category = request.form["category"]
-                man_date = request.form["manufacturing_date"]
+                man_date = request.form["date_added"]
                 img = request.files["img"]
-                product = Product(name = name, description = description, stock = stock, owner = user.id, rate = rate, unit = unit, manufacturing_date=man_date, category_name=category)
+                product = Product(name = name, description = description, brand=brand, price = rate, date_added=man_date, category_name=category, size_36=s36, size_37=s37, size_38=s38,size_39=s39,size_40=s40,size_41=s41,size_42=s42,gender=gender,discount=discount)
                 db.session.add(product)
                 db.session.commit()
                 img.save("./static/products/" + str(product.id) + ".png")
@@ -329,7 +281,7 @@ def edit_product(product_id):
     p=int(product_id)
     if request.method=="GET" and "user" in session:
         user=User.query.filter_by(admin = True)
-        cat=Store_Category.query.all()
+        
         prod=Product.query.filter_by(id=product_id)
         return render_template("edit_product.html",cat=cat,prod=prod)
     
@@ -436,7 +388,7 @@ def cat(category):
         p_new=[]
         for i in p:
             p_new.append(i)
-        cat=Store_Category.query.all()
+       
 
         return render_template("home.html",prod=p_new,cat=cat,max=max,user=session["user"])
         
@@ -455,7 +407,7 @@ def search(val):
                 max=i.rate
         
         p=Product.query.all()
-        cat=Store_Category.query.all()
+      
         p_new=[]
         for i in p:
             if i.name==val or str(int(i.rate))==val or i.manufacturing_date==val or i.category_name==val:
@@ -463,7 +415,6 @@ def search(val):
 
         return render_template("home.html",prod=p_new,cat=cat,max=max,search_name=val)
     if request.method=="POST":
-        cat = Store_Category.query.all()
         if "category" in request.form:
             if request.form["category"]!=" ":
                 filter= Product.query.filter_by(category_name = request.form["category"])
@@ -492,7 +443,7 @@ def search(val):
 
     return render_template("home.html")  
 
-'''razorpay_client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
+razorpay_client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
 @app.route('/create_order', methods=['POST'])
 def create_order():
     # Get the order amount from the frontend
@@ -505,4 +456,4 @@ def create_order():
         'payment_capture': '1'  # Auto-capture payment
     })
     print('success')
-    print(order)'''
+    print(order)
