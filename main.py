@@ -1,13 +1,15 @@
+
 from flask import Flask as f
 from application.database import db
 from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from application.models import User, Store_Category, Product, Purchase, Order
+import stripe
 
 def create_app():
     app = f(__name__,template_folder='template',static_url_path='/static',static_folder='static')
-    
+    stripe.api_key = 'sk_test_51NhU8KSD25c7XMJIL1FGpIKixd5X2EP11u7zVUxY69wOY8O3p2uuynkoVC23ZwSsXuEtUbLveFjGAAGFPpncJRKd00U3ssaK6G'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = "abcd234"
