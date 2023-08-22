@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - E-Commerce</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #00A8E8, #00D8A8);
+        }
+        .profile {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-details {
+            flex: 1;
+        }
+        .order-history {
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        .order {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <div class="user-info">
+            <div class="user-details">
+                <h2>User's Name</h2>
+                <p>Email: user@example.com</p>
+                <p>Address: abcd</p>
+            </div>
+        </div>
+        <div class="order-history">
+            <h3>Order History</h3>
+            <div class="order">
+                <p>Order ID: 123456789</p>
+                <p>Date: August 22, 2023</p>
+                <p>Total: $150.00</p>
+                <p>Status: Shipped</p>
+                <div class = "card" style="display: flex; width: 75%; margin-inline: auto; padding-block: 2.5rem; justify-content: center; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px;">
+                    <section style="height: 100%; width: 60%; min-width: 380px;">
+                        <div class=" d-flex align-items-center " style="height: 100%;"></div>
+                            <img class=" img-fluid" src="img1.jpeg" alt="" style="text-align: center;">
+                        </div>
+                    </section>
+                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;">Sneaker Company</p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;">Fall Limited Edition Sneakers</p>
+                            
+            
+                            <div class="info__pricing d-flex align-items-center" style="margin-block: 1.5rem;">
+                                <span class="info__pricing--price" style="font-weight: 700; color: #000;">$125.00</span>
+                                <span class="info__pricing--discount" style="margin-left: 1rem; padding: 0.2rem 0.5rem; font-weight: 700; color: #e36209; background-color: #f2f2f2; border-radius: 6px;">50%</span>
+                                <span class="info__pricing--before" style="margin-left: auto; font-weight: 700; color: #757575;">$250.00</span>
+                            </div>
+                    
+                    <div class="flex-container" style="display: flex; justify-content: flex-start">
+                    <button type="button" style=" display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">Return</button>
+                    <button type="button" style="display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">&#63;</button>
+                </div>
+                </div>
+            </div>
+            <div class="order">
+                <p>Order ID: 123456789</p>
+                <p>Date: August 22, 2023</p>
+                <p>Total: $150.00</p>
+                <p>Status: Shipped</p>
+                <div class = "card" style="display: flex; width: 75%; margin-inline: auto; padding-block: 2.5rem; justify-content: center; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px;">
+                    <section style="height: 100%; width: 60%; min-width: 380px;">
+                        <div class=" d-flex align-items-center " style="height: 100%;"></div>
+                            <img class=" img-fluid" src="img1.jpeg" alt="" style="text-align: center;">
+                        </div>
+                    </section>
+                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;">Sneaker Company</p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;">Fall Limited Edition Sneakers</p>
+                            
+            
+                            <div class="info__pricing d-flex align-items-center" style="margin-block: 1.5rem;">
+                                <span class="info__pricing--price" style="font-weight: 700; color: #000;">$125.00</span>
+                                <span class="info__pricing--discount" style="margin-left: 1rem; padding: 0.2rem 0.5rem; font-weight: 700; color: #e36209; background-color: #f2f2f2; border-radius: 6px;">50%</span>
+                                <span class="info__pricing--before" style="margin-left: auto; font-weight: 700; color: #757575;">$250.00</span>
+                            </div>
+                    
+                    <div class="flex-container" style="display: flex; justify-content: flex-start">
+                    <button type="button" style=" display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">Return</button>
+                    <button type="button" style="display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">&#63;</button>
+                </div>
+            </div>
+            <!-- More order entries can be added here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
