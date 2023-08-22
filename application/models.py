@@ -47,17 +47,18 @@ class Review(db.Model):
     prod_id = db.Column(db.Integer, nullable=False)
 
 class Cart(db.Model):
-    __tablename__ = "sneaker_cart"
+    __tablename__ = "sneakers_cart"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product_id = db.Column(db.Integer, unique=False, nullable=False)
     user_id = db.Column(db.Integer, unique=False, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Integer, nullable=False)
+    size = db.Column(db.Integer, nullable=False)
     date_added = db.Column(db.Integer, nullable=False,default=date.today)
   
 
 class Purchase(db.Model):
-    __tablename__ = "purchases_stores"
+    __tablename__ = "purchases_sneaker_stores"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product = db.Column(db.Integer, nullable=False)
     owner_store = db.Column(db.Integer, nullable=False)
@@ -65,10 +66,13 @@ class Purchase(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     date_added = db.Column(db.Date, nullable=False, default=date.today)
+    order_id = db.Column(db.Integer, nullable=False)
 
 class Order(db.Model):
-    __tablename__ = "orders"
+    __tablename__ = "sneaker_orders"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, nullable=False)
     total_price =db.Column(db.Float, nullable=False)
     payment_method = db.Column(db.String, nullable=False)
     date_added = db.Column(db.Date, nullable=False, default=date.today)
+    status = db.Column(db.String, nullable=False, default="In Process")

@@ -7,8 +7,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        body {
+    /* Use the appropriate gradient values */
+    background: linear-gradient(45deg,  #ffff01,#01c1f7 );
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+}
+    </style>
 </head>
-<body style=" background: linear-gradient(45deg,  #ffff01,#01c1f7);">
+<body >
 {% include 'navbar.html' %}
 
 {% if error1 %}<h6 style="color: rgb(90, 9, 9);margin-left: 5%;margin-top: 2%;">{{error1}}</h6>{% endif %}
@@ -101,6 +112,7 @@
                             
                         </div>
                     </div>
+                    </a>
                     <form method="post">
                         <div class="input-group mb-3">
                           <span class="input-group-text" style="width: 50px;">₹</span>
@@ -114,7 +126,7 @@
                           {% endif %}
                         </div>
                     </form>
-                    </a>
+                    
                 </div>
 
          

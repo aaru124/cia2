@@ -2,15 +2,16 @@ from flask import jsonify, render_template, request, session, redirect
 from flask import current_app as app
 import razorpay
 import stripe
-from application.models import User, db, Product, Purchase, Order
+from application.models import User, db, Product, Purchase, Order, Cart
 import re
 import json
 
 
 @app.route('/')
 def welcome():
-   
+    
     if "user" not in session:
+        session["guest"]="yes"
         return render_template("main.html",var="Login",var1="/user-login")
     if "user" in session:
         print("hey in session")
@@ -33,7 +34,7 @@ def sneaker():
         
         
         if "user" not in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Login" ,var1="/user-login")
+            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
         if "user" in session:
             return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout")
            
@@ -46,91 +47,64 @@ def sneaker():
             product_id= request.form["product"]
             count = request.form["quantity"]
             size = request.form["size"]
-            product = Product.query.filter_by(id = product_id).first()
-        
-            cart = json.loads(session["cart"])
-            if size=="36":
-                if product.size_36<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_36):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_36):
-                            cart[product_id] = count
-            if size=="37":
-                if product.size_37<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_37):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_37):
-                            cart[product_id] = count
-            if size=="38":
-                if product.size_38<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_38):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_38):
-                            cart[product_id] = count
-            if size=="39":
-                if product.size_39<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_39):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_39):
-                            cart[product_id] = count
-            
-            if size=="40":
-                if product.size_40<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_40):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_40):
-                            cart[product_id] = count
-            
-            if size=="41":
-                if product.size_41<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_41):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_41):
-                            cart[product_id] = count
-            
-            if size=="42":
-                if product.size_42<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_42):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_42):
-                            cart[product_id] = count
+            product = Product.query.filter_by(id = int(product_id)).first()
+            u=User.query.filter_by(name=session["user"]).first()
+            cart = Cart.query.filter_by(user_id=u.id)
+            flag=1
+            for i in cart:
+                
+                if i.product_id==int(product_id) and i.size==int(size):
+                    
+                    flag=0
+                    if size=="36":
+                        if product.size_36<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                            
+                    if size=="37":
+                        if product.size_37<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="38":
+                        if product.size_38<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="39":
+                        if product.size_39<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="40":
+                        if product.size_40<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="41":
+                        if product.size_41<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="42":
+                        if product.size_42<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+            if flag==1:
+                c = Cart(product_id=product.id, user_id=u.id, quantity=int(count), price=product.price ,size=int(size))
+                db.session.add(c)
+                db.session.commit()
 
-            session["cart"] = json.dumps(cart)
             return redirect("/sneakers")
         if "min_price" in request.form:
 
@@ -158,7 +132,7 @@ def slide():
         prod= Product.query.filter_by(category_name = "slides")
         
         if "user" not in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Login" ,var1="/user-login")
+            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
         if "user" in session:
             return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout")
            
@@ -361,7 +335,10 @@ def user_register():
 def user_login():
     errors={}
     if request.method=='GET':
-        return render_template("user_login.html",error=errors)
+        if "user" not in session:
+            return render_template("user_login.html",error=errors,var="Login" ,var1="/user-login")
+        if "user" in session:
+            return render_template("user_login.html",error=errors,var="Logout" ,var1="/logout")
     
     elif request.method=='POST':
         username = request.form['username']
@@ -561,35 +538,40 @@ def edit_product(product_id):
 
 @app.route("/cart", methods=["GET","POST"])
 def cart():
-    if "user" in session: user = User.query.filter_by(name=session["user"]).first() 
-    if "user" in session and user.admin==False:
-        cart = json.loads(session["cart"])
-        print(cart)
+    if "user" in session: 
+        user = User.query.filter_by(name=session["user"]).first() 
+        cart = Cart.query.filter_by(user_id=user.id)
         products=[]
         rate_list=[]
-        for product_id in cart.keys():
+        for i in cart:
+            
             el=[]
-            p=Product.query.filter_by(id = product_id).first()
-            r=int(Product.query.filter_by(id = product_id).first().rate)*int(cart[product_id])
-            c=cart[product_id]
+            p=Product.query.filter_by(id = i.product_id).first()
+            r=int(i.price*i.quantity)
+            c=i.quantity
+            s=i.size
             el.append(p)
             el.append(c)
             el.append(r)
+            el.append(i)
             rate_list.append(r)
             products.append(el)
 
-       
         total = sum(rate_list)
-        if request.method == "GET":
+        if request.method=="GET":
+          
             if "user" not in session:
+                
                 return render_template("cart.html",error="",var="Login",var1="/user-login",products = products, total = total)
             if "user" in session:
                 return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total)
             
         else:
             if "remove" in request.form:
-                cart.pop(request.form["remove"])
-                session["cart"] = json.dumps(cart)
+                id = request.form['remove']
+                cart_del=Cart.query.filter_by(id = int(id)).first()
+                db.session.delete(cart_del)
+                db.session.commit()
                 return redirect("/cart")
             else:
                 for product, count, rate in products:
@@ -602,9 +584,11 @@ def cart():
                 db.session.commit() 
                 session["cart"] = json.dumps(dict())
                 return redirect("/thank-you")
-    elif user.admin!=False:
-        return render_template("cart.html", error="You are not a user")
-    return redirect("/home")
+    elif "guest" in session:
+        if request.method=="GET":
+            return render_template("cart.html",error="",var="Login",var1="/user-login")
+           
+    return redirect("/")
 
 @app.route("/thank-you")
 def final():
@@ -779,6 +763,11 @@ def account():
 def wishlist():
 
     if request.method=="GET":
-        a=User.query.filter_by(name=session['user']).first()
-        return render_template("wishlist.html",var="Logout" ,var1="/logout",u=a)
+        if "user" in session:
+            a=User.query.filter_by(name=session['user']).first()
+            return render_template("wishlist.html",var="Logout" ,var1="/logout",u=a)
+        if "guest" in session:
+            
+            return render_template("wishlist.html",var="Login" ,var1="/user-login")
+
 

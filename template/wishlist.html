@@ -52,11 +52,20 @@
     font-family: 'CustomFont', sans-serif;
     
 }
+body {
+    /* Use the appropriate gradient values */
+    background: linear-gradient(45deg,  #dcdccd,#c0a27e,#8a5617 );
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+}
     </style>
 </head>
 <body >
     {% include 'navbar.html' %}
-    <div class="wishlist-container mx-4" style="background: linear-gradient(135deg, #dcdccd,#c0a27e,#8a5617 );text-align: center;">
+    <div class="wishlist-container mx-4" >
      
         <h2 class="mb-4 custom-font" style="text-align: center;"><i class="fas fa-heart"></i> My Wishlist</h2>
         <div class="card">
