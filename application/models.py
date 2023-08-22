@@ -4,16 +4,18 @@ from application.database import db
 
 
 class User(db.Model):
-    __tablename__ = "sneakers_user"
+    __tablename__ = "sneakers_users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, unique=False, nullable=False)
     password = db.Column(db.String, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
     guest = db.Column(db.Boolean, nullable=False, default=False)
-    address = db.Column(db.String, nullable=False)
-    postal_code = db.Column(db.Integer, nullable=False)
+    address = db.Column(db.String, nullable=False, default="Admin No Address")
+    postal_code = db.Column(db.Integer, nullable=False, default="Admin No Zipcode")
     contact_no = db.Column(db.Integer, nullable=False)
     email = db.Column(db.String, nullable=False)
+    store_name =db.Column(db.Integer, nullable=False, default="User No Store")
+
 
 
 class Product(db.Model):
@@ -33,7 +35,7 @@ class Product(db.Model):
     size_41 = db.Column(db.Integer, nullable=False)
     size_42 = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String)
-    date_added = db.Column(db.String, nullable=False)
+    date_added = db.Column(db.String, nullable=False,default=date.today)
 
 
 class Review(db.Model):
@@ -43,6 +45,15 @@ class Review(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     prod_id = db.Column(db.Integer, nullable=False)
+
+class Cart(db.Model):
+    __tablename__ = "sneaker_cart"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    product_id = db.Column(db.Integer, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, unique=False, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    date_added = db.Column(db.Integer, nullable=False,default=date.today)
   
 
 class Purchase(db.Model):

@@ -3,57 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhimsiStore</title>
+    <title>AeroStride</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
-<body style="background-color: rgb(191, 227, 187);">
+<body style=" background: linear-gradient(45deg,  #ffff01,#01c1f7);">
 {% include 'navbar.html' %}
-<!--<nav class="navbar navbar-expand-lg" style="background-color: rgb(1, 25, 1);">
-    <a class="navbar-brand" href="/home" style="margin-left: 5%;color: rgb(207, 231, 195);">WhimsiMart</a>
-    
-    <ul class="navbar-nav ml-auto" >
-        <li class="nav-item dropdown" style="margin-left: 50px;">
-            <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(207, 231, 195);">
-              Category
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                {% for i in cat %}
-              <a class="dropdown-item" href="/home/{{i.name}}">{{i.name}}</a>
-              {% endfor %}
-              <a class="dropdown-item" href="/home">All</a>
-              
-            </div>
-          </li>
-        <li class="nav-item" style="margin-left: 450px; color: rgb(207, 231, 195);">
-            <a class="nav-link"  href="/cart" style="color: rgb(207, 231, 195);">Cart<i class="fas fa-shopping-cart"></i></a>
-        </li>
-       <li class="nav-item" style="color: rgb(207, 231, 195);"></li><li class="nav-item"></li>
-        <li class="nav-item" style="color: rgb(207, 231, 195);">
-            <a class="nav-link" href="/logout" style="color: rgb(207, 231, 195);">Logout</a>
-        </li>
-       
-        <li style="display: inline;" class="nav-item" >
-            <input class="form-control mr-sm-2" type="search" title="Search by name, mfg date, price, category.." placeholder="Search by name, mfg date..." aria-label="Search by name, mfg date..." name="search_val" style="display: inline;" id="inputBox">
-           
-        </li>
-        <li class="nav-item">
-            <a class="btn btn-outline-success my-2 my-sm-0" id="anchorTag"><i class="fas fa-search"></i></a>
-        </li>
 
-        
-    </ul>
-</nav>-->
 {% if error1 %}<h6 style="color: rgb(90, 9, 9);margin-left: 5%;margin-top: 2%;">{{error1}}</h6>{% endif %}
 
 {% if error %}<h6 style="color: rgb(84, 6, 6);margin-left: 5%;">{{error}} <a href="/user-login"> Go to User Login Page</a></h6>{% endif %}
 <div class="container mt-5">
     <div class="row mb-3">
-        <div class="col-md-8" style="color: darkgreen; margin-left: 0%; font-family: 'Times New Roman', Times, serif; font-size: 25px;">Welcome {{user}}!</div>
-        <div class="col-md-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="color: darkgreen; margin-left: 0%; font-size: 25px;">
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="inputBox">
+                <a class="btn btn-outline-success" id="anchorTag" type="submit" style="background-color: darkslategrey;color:cornsilk"><i class="fas fa-search" ></i></a>
+            </form></div>
+        <div class="col-md-3">
             <form method="post">
-                <div class="text-center" style="margin-left: 220px;">
+                <div class="text-center" style="margin-left: 120px;">
                     <button class="btn" type="button" data-toggle="collapse" data-target="#collapseBox" style="background-color: darkslategrey;color:cornsilk">
                         Apply Filters
                      </button>
@@ -105,54 +76,92 @@
         <div class="col-md-12">
             {% if search_name %}<div class ="row mb-3"> <p>Showing results in "<span style="font-weight: bold;">{{search_name}}</span>"</p> </div>{% endif %}
             {% if filter_name %}<div class ="row mb-3"> <h3>{{filter_name}}</h3> </div>{% endif %}
-            <div class="row">
+            
+            <div class="row mt-4" >
                 {% if not prod %} <p style="margin-left: 2px;">No products available right now.</p> {% endif %}
 
                 {% for i in prod %}
 
                 <div class="col-md-4">
-                    <div class="card" style="height: 400px;">
+                    <a href="/product_page/{{i.name}}" style="text-decoration: none;">
+                    <div class="card" style="height: 350px;">
                         {% set img_name=i.id %}
                         <img src="{{url_for('static', filename='products/'+img_name|string+'.png')}}" class="card-img-top" alt="Product Image" height="250px" width="250px">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-7">
-                                    <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;" >{{i.name}}</span> </h5>
+                                <div class="col-md-10">
+                                    <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" >{{i.name}}</span> </h5>
                                 </div>
-                                <div class="col-md-5">
-                                    <p class="card-text" style="display: inline; font-size: 12px;">Mfg. date: {{i.manufacturing_date}}</p>
-                                </div>
+                                
                             </div>
                            
                             
-                            <p class="card-text" style="font-size: 10px;">{{i.category_name}}</p>
-                           
-                            <p class="card-text">{{i.description}}</p>
+                            <p class="card-text" style="font-size: 10px;">{{i.category_name}} | {{i.brand}}</p>
+
                             
                         </div>
                     </div>
                     <form method="post">
                         <div class="input-group mb-3">
-                          <span class="input-group-text">₹</span>
-                          <span class="input-group-text">{{i.rate}}</span>
+                          <span class="input-group-text" style="width: 50px;">₹</span>
+                          <span class="input-group-text" style="width: 150px;">{{i.price}}</span>
 
-                          <input type="number" type="text" class="form-control" placeholder="Quantity" name="count" required>
-                          {% if i.stock==0 %}
-                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);" disabled>Out of Stock</button>
+                          
+                          {% if (i.size_36+i.size_37+i.size_38+i.size_39+i.size_40+i.size_41+i.size_42)==0 %}
+                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);width: 155px;" disabled>Out of Stock</button>
                           {% else %}
-                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);">Add to Cart</button>
+                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 155px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
                           {% endif %}
                         </div>
                     </form>
+                    </a>
                 </div>
 
-                {% endfor %}
+         
 
             </div>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
+          
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            <div class="mb-3">
+              <label for="size" class="form-label">Size:</label>
+              <select class="form-select" id="size" name="size">
+                <option value="36">36</option>
+                <option value="37">37</option>
+                <option value="38">38</option>
+                <option value="39">39</option>
+                <option value="40">40</option>
+                <option value="41">41</option>
+                <option value="42">42</option>
+                
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity:</label>
+              <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="product" value="{{i.id}}">Add to Cart</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -163,9 +172,11 @@
     const anchorTag = document.getElementById('anchorTag');
 
     inputBox.addEventListener('input', () => {
-    anchorTag.href=`/home/search/${inputBox.value}`;
+    anchorTag.href=`/sneakers/search/${inputBox.value}`;
   });
-    
+  function showModal() {            
+            $('#addToCartModal').modal('show');
+        }
   
     
 </script>

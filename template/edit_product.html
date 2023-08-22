@@ -4,46 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product</title>
+    <style>
+        body{
+            
+            background: linear-gradient(to bottom,  #ffffcc,#e06704);
+            }
+        @font-face {
+    font-family: 'CustomFont';
+    src: url("../static/fonts/TAN-NIMBUS.ttf") format('truetype'); 
+}
+
+
+.custom-font {
+    font-family: 'CustomFont', sans-serif;
+    
+      }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
     <div class="container mt-4">
-        <h2>Edit Product</h2>
+        <h2 style="font-weight: bold; color: rgb(43, 3, 3);">Edit Product</h2>
         {% for i in prod %}
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" class="mt-4">
             <div class="input-group mb-3">
-                <input class="form-control" type="file" name="img" placeholder="Upload Image" value="{{i.id}}.png">
+               
+                <input class="form-control" type="file" name="img" placeholder='Upload Image' >
             </div>
             <div class="form-group mt-4">
                 <label for="product_name">Product Name</label>
                 <input type="text" class="form-control" id="product_name" name="product_name" value="{{i.name}}" >
             </div>
             <div class="form-group mt-4">
-                <label for="rate">Rate per Unit</label>
-                <input type="number" class="form-control" id="rate" name="rate" value="{{i.rate}}">
+                <label for="rate">Price</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{i.price}}" >
             </div>
             <div class="form-group mt-4">
-                <label for="unit">Unit (kg,g,L,etc..)</label>
-                <input type="text" class="form-control" id="unit" name="unit" value="{{i.unit}}">
+                <label for="rate">Discount</label>
+                <input type="number" class="form-control" id="discount" value="{{i.discount}}" name="discount" >
             </div>
             <div class="form-group mt-4">
-                <label for="stock">Stock</label>
-                <input type="number" class="form-control" id="stock" name="stock" value="{{i.stock}}">
+                <label for="unit">Brand</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="{{i.brand}}" >
             </div>
             <div class="form-group mt-4">
-                <label for="description">Description (Mention best before, etc..)</label>
-                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                <label for="gender">Gender</label>
+                <select class="form-control" id="category" name="gender" value="{{i.gender}}" >
+                    <option value="Men">Men</option>
+                    <option value="Women">Women</option>
+                    <option value="Child">Child</option>
+                    <option value="Unisex">Unisex</option>
+                </select>
+            </div>
+
+            <div class="form-group mt-4">
+                <label for="stock">Size 36 Stock</label>
+                <input type="number" class="form-control" id="size_36" name="size_36" value="{{i.size_36}}" >
             </div>
             <div class="form-group mt-4">
-                <label for="manufacturing_date">Manufacturing Date</label>
-                <input type="date" class="form-control" id="manufacturing_date" name="manufacturing_date" value="{{i.manufacturing_date}}">
+                <label for="stock">Size 37 Stock</label>
+                <input type="number" class="form-control" id="size_37" name="size_37" value="{{i.size_37}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Size 38 Stock</label>
+                <input type="number" class="form-control" id="size_38" name="size_38" value="{{i.size_38}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Size 39 Stock</label>
+                <input type="number" class="form-control" id="size_39" name="size_39" value="{{i.size_39}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Size 40 Stock</label>
+                <input type="number" class="form-control" id="size_40" name="size_40" value="{{i.size_40}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Size 41 Stock</label>
+                <input type="number" class="form-control" id="size_41" name="size_41" value="{{i.size_41}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="stock">Size 42 Stock</label>
+                <input type="number" class="form-control" id="size_42" name="size_42" value="{{i.size_42}}" >
+            </div>
+            <div class="form-group mt-4">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" ></textarea>
+            </div>
+            <div class="form-group mt-4">
+                <label for="date_added">Date Added</label>
+                <input type="date" class="form-control" id="date_added" name="date_added" value="{{i.date_added}}"  >
             </div>
             <div class="form-group mt-4">
                 <label for="category">Category</label>
-                <select class="form-control" id="category" name="category"  >
-                    {% for i in cat %}
-                    <option value="{{i.name}}">{{i.name}}</option>
-                    {% endfor %}
+                <select class="form-control" id="category" name="category" value="{{i.category}}" >
+                    <option value="sneakers">Sneakers</option>
+                    <option value="slides">Slides</option>
                 </select>
             </div>
            

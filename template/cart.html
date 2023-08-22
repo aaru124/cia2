@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body style="background-color: rgb(191, 227, 187);">
+  {% include 'navbar.html' %}
   <div class="container mt-4">
     <h1>Shopping Cart</h1>
     {% if error %}<h6 style="color: rgb(82, 16, 16);">{{error}} <a href="/user-login">Go to User Login Page</a></h6>{% endif %}
@@ -47,11 +48,11 @@
 
   
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
-
+ 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         var spanElement = document.getElementById("totalPrice");

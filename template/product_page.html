@@ -397,20 +397,14 @@ ul {
   <title>product page</title>
 </head>
 <body>
-    <div id="nav-placeholder"></div>
-
-    <script>
-        $.get("navbar.html", function(data){
-            $("#nav-placeholder").replaceWith(data);
-        });
-        </script>
+    {% include 'navbar.html' %}
 
   <main class="card">
-
+    
     <section class="slider">
 
-      <div class="slider__img--container">
-        <img class="slider__img" src="../static/logo.png" alt="">
+      <div class="slider__img--container" style="padding: 0%;">
+        <img class="slider__img" src="../static/products/{{prod.id}}.png" alt="" height="250px" width="250px">
       </div>
 
       
@@ -423,28 +417,36 @@ ul {
       <article class="product-content--info">
         <div class="product__info--text">
           <p class="product__info--brand"></p>
-          <h2 class="product__info--title">Fall Limited Edition Sneakers</h2>
+          <h2 class="product__info--title">{{prod.name}}</h2>
           <p class="product__info--description">
-            These low-profile sneakers are your perfect casual wear companion. Featuring a 
-            durable rubber outer sole, they'll withstand everything the weather can offer.
+            {{prod.brand}}
+          </p>
+          <p class="product__info--description">
+            {{prod.description}}
           </p>
         </div>
 
         <div class="info__pricing">
-          <span class="info__pricing--price">$125.00</span>
-          <span class="info__pricing--discount">50%</span>
-          <span class="info__pricing--before"><strike>$250.00</strike></span>
+          <span class="info__pricing--price">Rs. {{p}}</span>
+          {% if prod.discount %}
+          <span class="info__pricing--discount">{{prod.discount}}%</span>
+          <span class="info__pricing--before"><strike>Rs.{{prod.price}}</strike></span>
+          {% endif %}
+          
         </div>
       </article>
 
       <div class="product-content__order">
-        <div class="order__quantity">
-          <input class="order__quantity--input" type="number"  name="quantity" required>
-          <button class="order__quantity--btn minus" type="button" aria-label="button for remove quantity product"><img src="./images/icon-minus.svg" alt=""></button>
-          <button class="order__quantity--btn plus" type="button" aria-label="button for add quantity product"><img src="./images/icon-plus.svg" alt=""></button>
-        </div>
+        
+        <form method="post">
+            <div class="order__quantity">
+                <input class="order__quantity--input" type="number" value="0" name="quantity">
+                <button class="order__quantity--btn minus" type="button" aria-label="button for remove quantity product"><img src="./images/icon-minus.svg" alt=""></button>
+                <button class="order__quantity--btn plus" type="button" aria-label="button for add quantity product"><img src="./images/icon-plus.svg" alt=""></button>
+              </div>
+            <button class="order__cart" type="submit"><img class="order__cart--icon" src="./images/icon-cart-white.svg" alt=""> Add to Cart</button>
 
-        <button class="order__cart" type="button"><img class="order__cart--icon" src="./images/icon-cart-white.svg" alt=""> Add to cart</button>
+        </form>
       </div>
     </section>
   </main>

@@ -5,7 +5,7 @@ from application.database import db
 from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from application.models import User, Product, Purchase, Order, Review
+from application.models import User, Product, Purchase, Order, Review, Cart
 import stripe
 
 def create_app():
@@ -30,6 +30,7 @@ admin.add_view(ModelView(Review, db.session))
 admin.add_view(ModelView(Product, db.session))
 admin.add_view(ModelView(Purchase, db.session))
 admin.add_view(ModelView(Order, db.session))
+admin.add_view(ModelView(Cart, db.session))
 
 from application.controllers import *
 
