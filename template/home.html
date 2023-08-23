@@ -26,16 +26,36 @@
 
 {% if error %}<h6 style="color: rgb(84, 6, 6);margin-left: 5%;">{{error}} <a href="/user-login"> Go to User Login Page</a></h6>{% endif %}
 <div class="container mt-5">
+
     <div class="row mb-3">
-        <div class="col-md-3"></div>
-        <div class="col-md-6" style="color: darkgreen; margin-left: 0%; font-size: 25px;">
+
+        <div class="col-md-8" style="color: darkgreen; margin-left: 0%; font-size: 25px;">
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="inputBox">
                 <a class="btn btn-outline-success" id="anchorTag" type="submit" style="background-color: darkslategrey;color:cornsilk"><i class="fas fa-search" ></i></a>
             </form></div>
-        <div class="col-md-3">
+
+        <div class="col-md-2">
+            <div class="container">
+                <form method="post">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 100px;background-color: darkslategrey;color:cornsilk">
+                            Sort by
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                            <li><button type="submit" name="sort" value="popularity" class="dropdown-item" >Popularity</button></li>
+                            <li><button type="submit" name="sort" value="price_l_h" class="dropdown-item" >Price (Low to High)</button></li>
+                            <li><button type="submit" name="sort" value="price_h_l" class="dropdown-item" >Price (High to Low)</button></li>
+                        </ul>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+        
+        <div class="col-md-2">
             <form method="post">
-                <div class="text-center" style="margin-left: 120px;">
+                <div class="text-center" >
                     <button class="btn" type="button" data-toggle="collapse" data-target="#collapseBox" style="background-color: darkslategrey;color:cornsilk">
                         Apply Filters
                      </button>
@@ -94,7 +114,7 @@
                 {% for i in prod %}
 
                 <div class="col-md-4">
-                    <a href="/product_page/{{i.name}}" style="text-decoration: none;">
+                    <a href="/product_page/{{i.id}}" style="text-decoration: none;">
                     <div class="card" style="height: 350px;">
                         {% set img_name=i.id %}
                         <img src="{{url_for('static', filename='products/'+img_name|string+'.png')}}" class="card-img-top" alt="Product Image" height="250px" width="250px">
@@ -120,12 +140,21 @@
 
                           
                           {% if (i.size_36+i.size_37+i.size_38+i.size_39+i.size_40+i.size_41+i.size_42)==0 %}
-                          <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: gray; color: rgb(27, 26, 26);width: 55px;" disabled><i id="heartIcon" class="bi bi-heart"></i></button>
+                          <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: gray; color: rgb(27, 26, 26);width: 55px;" disabled><i id="heartIcon" class="fas fa-heart"></i></button>
                           <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);width: 100px;" disabled>Out of Stock</button>
                           {% else %}
-                          <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: white; color: rgb(5, 39, 5);width: 55px;" ><i id="heartIcon" class="fas fa-heart"></i></button>
-
+                          {% if heart|length > 0%}
+                          {% for j in heart %}
+                          {% if i.id==j %}
+                          <button class="btn btn-outline-secondary" type="submit" name="wishlist_remove" value="{{i.id}}"  style="background-color: white; color: rgb(5, 39, 5);width: 55px;" ><i id="heartIcon" class="fas fa-heart" style="color: red;"></i></button>  
                           <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 100px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+                      
+                           {% endif %}
+                           {% endfor %}
+                           {% else %}
+                           <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: white; color: rgb(5, 39, 5);width: 55px;" ><i id="heartIcon" class="fas fa-heart" ></i></button>                        
+                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 100px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+                            {% endif %}
                           {% endif %}
                         </div>
                     </form>
@@ -177,6 +206,44 @@
     </div>
   </div>
   {% endfor %}
+
+  <footer class="text-center py-4">
+    <p style="font-size: 8px;">&copy; 2023 AeroStride. All rights reserved. <a data-toggle="modal" data-target="#policiesModal" href="#">Terms & Conditions applied.</a></p>
+  </footer>
+
+  <div class="modal fade " id="policiesModal" tabindex="-1" role="dialog" aria-labelledby="policiesModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="policiesModalLabel">AeroStride Policies</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="policiesTabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="terms-tab" data-toggle="tab" href="#terms" role="tab" aria-controls="terms" aria-selected="true">Terms and Conditions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="return-tab" data-toggle="tab" href="#return" role="tab" aria-controls="return" aria-selected="false">Return Policy</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="policiesTabsContent">
+            <div class="tab-pane fade show active" id="terms" role="tabpanel" aria-labelledby="terms-tab">
+              <!-- Place your terms and conditions content here -->
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+            <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
+              <!-- Place your return policy content here -->
+              <p>If you wish to return a product, please follow our return policy guidelines...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

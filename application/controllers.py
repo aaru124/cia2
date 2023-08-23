@@ -2,20 +2,38 @@ from flask import jsonify, render_template, request, session, redirect
 from flask import current_app as app
 import razorpay
 import stripe
-from application.models import User, db, Product, Purchase, Order, Cart
+from application.models import User, db, Product, Purchase, Order, Cart, WishList
 import re
 import json
 
 
 @app.route('/')
 def welcome():
-    
+    purch=Purchase.query.all()
+    p={}
+    for i in purch:
+        if i.product not in p:
+            p[i.product]=i.quantity
+        else:
+            p[i.product]+=i.quantity
+    lst=list(p.values())
+    lst.sort(reverse=True)
+    final=[]
+    ctr=0
+    for i in p:
+        if p[i] in lst and ctr<2:
+            final.append(i)
+            ctr+=1
+    print(final)
+    p1=Product.query.filter_by(id=final[0]).first()
+    p2=Product.query.filter_by(id=final[1]).first()
+
     if "user" not in session:
         session["guest"]="yes"
-        return render_template("main.html",var="Login",var1="/user-login")
+        return render_template("main.html",var="Login",var1="/user-login",p1=p1,p2=p2)
     if "user" in session:
         print("hey in session")
-        return render_template("main.html",var="Logout" ,var1="/logout")
+        return render_template("main.html",var="Logout" ,var1="/logout",p1=p1,p2=p2)
     return render_template("main.html",var="Login",var1="/user-login")
     
 
@@ -25,10 +43,20 @@ def welcome():
 def sneaker():
     
     prod=Product.query.filter_by(category_name = "sneakers")
+    if "user" in session: 
+        u=User.query.filter_by(name=session["user"]).first()
+        w=WishList.query.filter_by(user_id=u.id)
+        heart=[]
+        for i in prod:
+            for j in w:
+                if j.product_id==i.id:
+                    heart.append(i.id)
+
     max=0
     for i in prod:
         if int(i.price)>max:
             max=i.price
+    
     if request.method=="GET":
         prod= Product.query.filter_by(category_name = "sneakers")
         
@@ -36,7 +64,7 @@ def sneaker():
         if "user" not in session:
             return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
         if "user" in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout")
+            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart)
            
         
     
@@ -115,7 +143,43 @@ def sneaker():
                     p_new.append(i) 
             print(p_new)
             return render_template('home.html',prod=p_new)
+        
+        if "wishlist" in request.form and "user" in session:
+            id=int(request.form['wishlist'])
+            p=Product.query.filter_by(id=id).first()
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            flag=0
+            for i in w:
+                if i.product_id==id:
+                    flag=1
+            if flag==0:
+                w=WishList(product_id=p.id,user_id=u.id,price=p.price)
+                db.session.add(w)
+                db.session.commit()
+        
+        if "wishlist_remove" in request.form and "user" in session:
+            id=int(request.form['wishlist_remove'])
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==id:
+                    flag=i
+            db.session.delete(flag)
+            db.session.commit()
+        
+        if "sort" in request.form:
+            purch=Purchase.query.all()
+            p={}
+            for i in purch:
                 
+                if i.product not in p:
+                    p[i.product]=i.quantity
+                else:
+                    p[i.product]+=i.quantity
+            lst=list(p.values())
+            lst.sort(reverse=True)
+            
+            
         elif "user" not in session:
             return render_template("home.html", error="You are not logged in.",prod=prod,  max=max)
         return redirect("/sneakers")
@@ -124,6 +188,14 @@ def sneaker():
 def slide():
     
     prod=Product.query.filter_by(category_name = "slides")
+    if "user" in session: 
+        u=User.query.filter_by(name=session["user"]).first()
+        w=WishList.query.filter_by(user_id=u.id)
+        heart=[]
+        for i in prod:
+            for j in w:
+                if j.product_id==i.id:
+                    heart.append(i.id)
     max=0
     for i in prod:
         if int(i.price)>max:
@@ -134,7 +206,7 @@ def slide():
         if "user" not in session:
             return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
         if "user" in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout")
+            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart)
            
         
     
@@ -240,6 +312,29 @@ def slide():
                     p_new.append(i) 
             print(p_new)
             return render_template('home.html',prod=p_new)
+        
+        if "wishlist" in request.form and "user" in session:
+            id=int(request.form['wishlist'])
+            p=Product.query.filter_by(id=id).first()
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            flag=0
+            for i in w_check:
+                if i.product_id==id:
+                    flag=1
+            if flag==0:
+                w=WishList(product_id=p.id,user_id=u.id,price=p.price)
+                db.session.add(w)
+                db.session.commit()
+        
+        if "wishlist_remove" in request.form and "user" in session:
+            id=int(request.form['wishlist_remove'])
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==id:
+                    flag=i
+            db.session.delete(flag)
+            db.session.commit()
                 
         elif "user" not in session:
             return render_template("home.html", error="You are not logged in.",prod=prod,  max=max)
@@ -489,8 +584,8 @@ def edit_product(product_id):
         return render_template("edit_product.html",prod=prod)
     
 
-    if request.method=="POST" and "user" in session:
-        user = User.query.filter_by(name=session["user"]).first()
+    if request.method=="POST" and "admin" in session:
+        user = User.query.filter_by(name=session["admin"]).first()
         prod = Product.query.filter_by(id = p).first()      
         
         if user.admin:                
@@ -545,18 +640,19 @@ def edit_product(product_id):
             if s42:
                 prod.size_42 = s42
                 
-                
+            
             db.session.commit()
             if img:
                 img.save("./static/products/" + str(prod.id) + ".png")
 
-                return redirect("/store-manager/product")
+            return redirect("/store-manager/product")
         else:
             return render_template("product.html", error="You cannot delete this product",error_id=prod.id)
     return redirect("/store-manager/product")
 
 @app.route("/cart", methods=["GET","POST"])
 def cart():
+    total = 0
     if "user" in session: 
         user = User.query.filter_by(name=session["user"]).first() 
         cart = Cart.query.filter_by(user_id=user.id)
@@ -575,12 +671,13 @@ def cart():
             el.append(i)
             rate_list.append(r)
             products.append(el)
-
-        total = sum(rate_list)
+        
+        if len(rate_list)!=0:
+            total = sum(rate_list)
         if request.method=="GET":
-          
+            print("hey")
             if "user" not in session:
-                
+                print(rate_list,total)
                 return render_template("cart.html",error="",var="Login",var1="/user-login",products = products, total = total)
             if "user" in session:
                 return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total)
@@ -605,7 +702,7 @@ def cart():
                 return redirect("/thank-you")
     elif "guest" in session:
         if request.method=="GET":
-            return render_template("cart.html",error="",var="Login",var1="/user-login")
+            return render_template("cart.html",error="",var="Login",var1="/user-login",total=total)
            
     return redirect("/")
 
@@ -617,14 +714,128 @@ def final():
 @app.route("/product_page/<val>", methods=["GET","POST"])
 def product_page(val):
     if request.method=="GET": 
-        p = Product.query.filter_by(name=val).first()
+        if "user" in session: 
+            u=User.query.filter_by(name=session["user"]).first()
+            w=WishList.query.filter_by(user_id=u.id)
+            heart="false"
+            for j in w:
+                if j.product_id==int(val):
+                    heart="true"
+        p = Product.query.filter_by(id=int(val)).first()
         new_price=p.price
+        
         if p.discount:
             new_price=p.price-(p.price*(p.discount/100))
         if "user" not in session:
             return render_template("product_page.html",prod=p,var="Login",var1="/user-login",error="",p=new_price)
         if "user" in session:
-            return render_template("product_page.html",prod=p,var="Logout" ,var1="/logout",error="",p=new_price)
+            return render_template("product_page.html",prod=p,var="Logout" ,var1="/logout",error="",p=new_price,heart=heart)
+    
+    if request.method=="POST":
+        id=int(val)
+        if "wishlist" in request.form and "user" in session:
+            id=int(request.form['wishlist'])
+            p=Product.query.filter_by(id=id).first()
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            flag=0
+            for i in w_check:
+                if i.product_id==id:
+                    flag=1
+            if flag==0:
+                w=WishList(product_id=p.id,user_id=u.id,price=p.price)
+                db.session.add(w)
+                db.session.commit()
+            return redirect("/product_page/"+str(id))
+
+        if "wishlist_remove" in request.form and "user" in session:
+            id=int(request.form['wishlist_remove'])
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==id:
+                    flag=i
+            db.session.delete(flag)
+            db.session.commit()
+            return redirect("/product_page/"+str(id))
+        
+        if "product" in request.form :
+           
+            product_id= request.form["product"]
+            count = request.form["quantity"]
+            size = request.form["size"]
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==int(product_id):
+                    flag=i
+                    db.session.delete(flag)
+                    db.session.commit()
+
+            product = Product.query.filter_by(id = int(product_id)).first()
+            u=User.query.filter_by(name=session["user"]).first()
+            cart = Cart.query.filter_by(user_id=u.id)
+            prod=Product.query.all()
+            flag=1
+            for i in cart:
+                
+                if i.product_id==int(product_id) and i.size==int(size):
+                    
+                    flag=0
+                    if size=="36":
+                        if product.size_36<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                            
+                    if size=="37":
+                        if product.size_37<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="38":
+                        if product.size_38<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="39":
+                        if product.size_39<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="40":
+                        if product.size_40<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="41":
+                        if product.size_41<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="42":
+                        if product.size_42<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+            if flag==1:
+                c = Cart(product_id=product.id, user_id=u.id, quantity=int(count), price=product.price ,size=int(size))
+                db.session.add(c)
+                db.session.commit()
+
+            return redirect("/product_page/"+str(id))
+        return redirect("/product_page/"+str(id))
+
+
+
         
         
 
@@ -781,7 +992,9 @@ def account():
         main=[]
         lst=[]
         prod=[]
+        reward=0
         for i in order:
+            reward+=i.total_price
             lst.append(i.id)
             lst.append(i.date_added)
             lst.append(i.total_price)
@@ -792,19 +1005,119 @@ def account():
                     prod.append([b.id,b.brand,b.name,b.price])
             lst.append(prod)
             main.append(lst)
-        print(lst)
+        reward=reward*(0.01)
 
-        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main)
+
+        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main,reward=int(reward))
+
 
 @app.route('/wishlist', methods=["GET","POST"])
 def wishlist():
-
+    id= User.query.filter_by(name=session['user']).first()
+    w=WishList.query.filter_by(user_id=id.id)
+    lst=[]
+    for i in w:
+        p=Product.query.filter_by(id=i.product_id).first()
+        lst.append(p)
     if request.method=="GET":
         if "user" in session:
             a=User.query.filter_by(name=session['user']).first()
-            return render_template("wishlist.html",var="Logout" ,var1="/logout",u=a)
+            return render_template("wishlist.html",var="Logout" ,var1="/logout",u=a,w=lst)
         if "guest" in session:
             
             return render_template("wishlist.html",var="Login" ,var1="/user-login")
 
+    if request.method=="POST":
 
+        if "wishlist_remove" in request.form and "user" in session:
+            id=int(request.form['wishlist_remove'])
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==id:
+                    flag=i
+            db.session.delete(flag)
+            db.session.commit()
+            return redirect("/wishlist")
+        
+        if "product" in request.form :
+           
+            product_id= request.form["product"]
+            count = request.form["quantity"]
+            size = request.form["size"]
+            u=User.query.filter_by(name=session['user']).first()
+            w_check=WishList.query.filter_by(user_id=u.id)
+            for i in w_check:
+                if i.product_id==int(product_id):
+                    flag=i
+                    db.session.delete(flag)
+                    db.session.commit()
+
+            product = Product.query.filter_by(id = int(product_id)).first()
+            u=User.query.filter_by(name=session["user"]).first()
+            cart = Cart.query.filter_by(user_id=u.id)
+            prod=Product.query.all()
+            flag=1
+            for i in cart:
+                
+                if i.product_id==int(product_id) and i.size==int(size):
+                    
+                    flag=0
+                    if size=="36":
+                        if product.size_36<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                            
+                    if size=="37":
+                        if product.size_37<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="38":
+                        if product.size_38<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="39":
+                        if product.size_39<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="40":
+                        if product.size_40<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="41":
+                        if product.size_41<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="42":
+                        if product.size_42<int(count):
+                            render_template("wishlist.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+            if flag==1:
+                c = Cart(product_id=product.id, user_id=u.id, quantity=int(count), price=product.price ,size=int(size))
+                db.session.add(c)
+                db.session.commit()
+
+            return redirect("/wishlist")
+
+@app.route("/about")
+def about():
+    if "user" not in session:
+        return render_template("about.html",var="Login",var1="/user-login")
+    if "user" in session:
+        print("hey in session")
+        return render_template("about.html",var="Logout" ,var1="/logout")

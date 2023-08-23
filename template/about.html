@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+  <style>
+      @font-face {
+    font-family: 'CustomFont';
+    src: url("../static/fonts/TAN-NIMBUS.ttf") format('truetype'); /* Replace with actual font file path */
+}
+
+/* Apply the custom font to specific elements */
+.custom-font {
+    font-family: 'CustomFont', sans-serif;
+    font-size: 22px;
+    color: rgb(3, 3, 71);
+}
+body {
+    /* Use the appropriate gradient values */
+    background: linear-gradient(80deg, #FFDAB9, #FFA500, #800080);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+    
+    
+}
+  </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+<div class=" container text-center py-4" >
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="custom-font" style="margin-top: 10%;">About Us</h2>
+      <p style="margin-top: 6%;">At AeroStride, we stride to redefine comfort and style in every step you take. With a passion for footwear that blends fashion and functionality, AeroStride is your ultimate destination for premium sneakers and slides. Our mission is to provide footwear that not only complements your individual style but also enhances your comfort and performance. Whether you're a sneakerhead chasing the latest trends or someone seeking the perfect pair of slides for a leisurely day, AeroStride has you covered. We believe that your footwear should be a reflection of your personality and a source of confidence, which is why we meticulously curate our collection to cater to a diverse range of tastes. From sleek minimalist designs to bold and vibrant statements, our sneakers and slides are crafted using the finest materials and expert craftsmanship. Join us in the journey of walking, striding, and soaring with AeroStride – where each step is a celebration of comfort, style, and self-expression.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center py-4">
+    <p style="font-size: 8px;">&copy; 2023 AeroStride. All rights reserved. <a data-toggle="modal" data-target="#policiesModal" href="#">Terms & Conditions applied.</a></p>
+  </footer>
+
+  <div class="modal fade " id="policiesModal" tabindex="-1" role="dialog" aria-labelledby="policiesModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="policiesModalLabel">AeroStride Policies</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="policiesTabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="terms-tab" data-toggle="tab" href="#terms" role="tab" aria-controls="terms" aria-selected="true">Terms and Conditions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="return-tab" data-toggle="tab" href="#return" role="tab" aria-controls="return" aria-selected="false">Return Policy</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="policiesTabsContent">
+            <div class="tab-pane fade show active" id="terms" role="tabpanel" aria-labelledby="terms-tab">
+              <!-- Place your terms and conditions content here -->
+              <p>AeroStride Terms and Conditions<br>
+
+                1. Acceptance of Terms
+                By accessing and using the AeroStride website ("Site") and services, you agree to comply with these terms and conditions. If you do not agree, please refrain from using our services.<br>
+                
+                2. Use of the Site
+                You may use the Site for personal, non-commercial purposes only. Any unauthorized use or modification of the Site's content, images, or materials is prohibited.<br>
+                
+                3. Product Information
+                We strive to provide accurate product information on the Site. However, we do not guarantee the accuracy, completeness, or reliability of any product descriptions, prices, or availability.<br>
+                
+                4. Orders and Payments
+                Placing an order on our Site constitutes an offer to purchase products. We reserve the right to refuse or cancel orders at our discretion. Payments must be made using the provided payment methods.<br>
+                
+                5. Shipping and Returns
+                Please refer to our Return Policy for information regarding returns, exchanges, and shipping procedures.<br>
+                
+                6. Intellectual Property
+                All content on the Site, including but not limited to text, images, logos, and designs, is protected by copyright and other intellectual property laws. You may not reproduce, distribute, or modify any content without our permission.<br>
+                
+                7. Privacy Policy
+                Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.<br>
+                
+                8. Disclaimer of Warranties
+                The Site and its content are provided "as is" and "as available." We make no warranties or representations, express or implied, regarding the accuracy, reliability, or suitability of the Site for any purpose.<br>
+                
+                9. Limitation of Liability
+                In no event shall AeroStride or its affiliates be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with your use of the Site.<br>
+                
+                10. Governing Law and Jurisdiction
+                These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction]. Any disputes shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].<br>
+                
+                11. Changes to Terms
+                We reserve the right to modify these terms and conditions at any time. It is your responsibility to review the terms periodically. Your continued use of the Site after changes are made constitutes your acceptance of the updated terms.<br>
+                
+
+                
+                
+                </p>
+            </div>
+            <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
+              <!-- Place your return policy content here -->
+              <p>If you wish to return a product, please follow our return policy guidelines...</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

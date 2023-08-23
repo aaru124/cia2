@@ -48,7 +48,7 @@ body {
     
     <ul class="navbar-nav ml-auto " style="margin-left: 6%;" >
         <li class="nav-item" style=" color: white;">
-            <a class="nav-link"  href="/" style="color: white;">Home</a>
+            <a class="nav-link"  href="/about" style="color: white;">About</a>
         </li>
         <li class="nav-item" style="margin-left: 50px; color: white;">
             <a class="nav-link"  href="/sneakers" style="color: white;">Sneakers</a>
@@ -114,7 +114,11 @@ body {
           </tr>
         </thead>
         {% endif %}
+        {% if total==0 %} <img src="../static/empty.png" alt="Cart is Empty" style="height: 700px; width: 500px; text-align: center;margin-top: -20%;margin-left: 27%;">
+        <h4 style=" text-align: center;margin-top: -20%; color: #f3f3e5;">Cart is Empty. <a href="/" style="color: #2d1303;">Shop Now!</a></h4>
+{% endif %}
         {% for product,count,price,size in products %}
+        
         <tbody>
           
           <tr style="color: rgb(3, 37, 3);">
@@ -135,12 +139,62 @@ body {
           </tr>
           
         </tbody>
-        {% endfor %}
+       {% endfor %}
       </table>
-      
-      {% if total==0 %} <h4 style="color: red;" class="custom-font-n"> Cart is Empty :/</h4> {% endif %}
-      {% if total!=0 %}<h6 style="margin-left: 900px" class="mt-4" >Total Price: Rs.<span id="totalPrice" value="{{total}}">{{ total }}</span></h6>
+      {% if total!=0 %} 
+      {% set n_price=total %}
+      <div class="container mt-5">
+        <div class="card mb-3">
+          <div class="card-header">
+            Order Summary
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row">Current Price</th>
+                  <td>Rs. {{n_price}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">GST (18%)</th>
+                  {% set gst= 0.18*n_price %}
+                  <td>Rs. {{gst}}</td>
+                </tr>
+                <tr>
+                  {% if n_price < 10000 %}
+                  {% set more= 10000-n_price%}
+                  {% set shipping=100 %}
+                  {% else %}
+                  {% set shipping=0 %}
+                  {% endif %}
+                  {% if shipping==0 %}
+                  <th scope="row">Shipping</th>
+                  <td style="font-family: 'Times New Roman', Times, serif;color: green;">FREE</td>
+                  {% else %}
+                  <th scope="row">Shipping <span style="color: red;font-size: 10px;font-weight: lighter;">(shop for Rs. {{more}} more for free shipping!)</span></th>
+                  <td>Rs. {{shipping}}</td>
+                  {% endif %}
+                  
+                </tr>
+                <tr>
+                  <th scope="row">Total</th>
+                  {% set total_p=n_price+gst+shipping %}
+                  <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            {% if total!=0 %}
       <button style="margin-left: 900px" type="button" style="background-color: rgb(34, 3, 3); color: antiquewhite;" class="btn btn-success mt-1" id="pay-button" >Pay Now</button>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+     
+      
     </form>
   </div>
 
@@ -162,7 +216,7 @@ body {
     </div>
 </div>
   
-  
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>

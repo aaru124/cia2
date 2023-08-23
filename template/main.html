@@ -541,7 +541,7 @@ section {
 }
 body {
     /* Use the appropriate gradient values */
-    background: linear-gradient(45deg, #FFDAB9, #FFA500, #800080);
+    background: linear-gradient(80deg, #FFDAB9, #FFA500, #800080);
     background-size: cover;
     background-attachment: fixed;
     height: 100%;
@@ -566,24 +566,30 @@ body {
         <section class="product " id="product">
             <h1 class="custom-font">POPULAR PRODUCTS</h1>
         
-            <div class="box-container">
-                <a href="#" class="box"  style="text-decoration: none;">
-                    <img src="../static/products/2.png" alt="" style="margin-left: 10%;">
-                    <div class="content" >
-                        <h3>SNEAKER 1</h3>
-                        <p>abc</p>
-                        <span>$50</span>
-                    </div>
-                </a>
+            <div class="row" >
+                <div class="col-md-6">
+                    <a href="#" class="card"  style="text-decoration: none; width: 500px;">
+                        <img src="../static/products/{{p1.id}}.png" alt="" style="height: 400px;">
+                        <div class="card-footer" >
+                            <h3>{{p1.name}}</h3>
+                            <p>{{p1.brand}}</p>
+                            <span>Rs. {{p1.price}}</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6">
+                    <a href="#" class="card"  style="text-decoration: none; width: 500px;">
+                        <img src="../static/products/{{p2.id}}.png" alt="" style="height: 400px;">
+                        <div class="card-footer" >
+                            <h3>{{p2.name}}</h3>
+                            <p>{{p2.brand}}</p>
+                            <span>Rs. {{p2.price}}</span>
+                        </div>
+                    </a>
+                </div>
     
-                <a href="#" class="box"  style="text-decoration: none;">
-                    <img src="../static/products/2.png" alt="" style="margin-left: 10%;">
-                    <div class="content" >
-                        <h3>SNEAKER 1</h3>
-                        <p>abc</p>
-                        <span>$50</span>
-                    </div>
-                </a>
+                
     
          </div>
 
@@ -600,42 +606,39 @@ body {
 
 <body>
 
-    <div class="container mt-5">
+    <div class="container mb-4">
         
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card mb-3">
-                    <img src="coupon1.jpg" class="card-img-top" alt="Coupon 1">
+                <div class="card mb-3" style="height: 135px;background-color: rgba(68, 68, 51, 0);border-color: rgba(68, 68, 51, 0);">
                     <div class="card-body">
-                        <h5 class="card-title">25% Off</h5>
-                        <p class="card-text">Use code: SAVE25</p>
+                    <img src="../static/coupon1.png" class="card-img-top" alt="Coupon 1" style="margin-top: 26%;">
+
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card mb-3">
-                    <img src="coupon2.jpg" class="card-img-top" alt="Coupon 2">
+                <div class="card  mb-3" style="height: 135px;background-color: rgba(68, 68, 51, 0);border-color: rgba(68, 68, 51, 0);">
                     <div class="card-body">
-                        <h5 class="card-title">$10 Off</h5>
-                        <p class="card-text">Use code: DISCOUNT10</p>
+                    <img src="../static/coupon2.png" class="card-img-top" alt="Coupon 2" style="margin-top: 26%;" >
+
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card mb-3">
-                    <img src="coupon3.jpg" class="card-img-top" alt="Coupon 3">
+                <div class="card mb-3" style="height: 135px;background-color: rgba(68, 68, 51, 0);border-color: rgba(68, 68, 51, 0);">
                     <div class="card-body">
-                        <h5 class="card-title">Free Shipping</h5>
-                        <p class="card-text">Use code: FREESHIP</p>
+                    <img src="../static/coupon3.png" class="card-img-top" alt="Coupon 3" style="margin-top: 26%;" >
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 
-
-    <div class="container mt-5">
-        <h1 class="custom-font">TESTIMONIALS</h1>
+    <div class="container mt-5 mb-3" style="margin-top: 5%;">
+        <h1 class="custom-font" style="margin-top: 10%;">TESTIMONIALS</h1>
         <div id="testimonialsCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -729,7 +732,45 @@ body {
         </div>
     </div>
 
-    <div class=" py-5 mt-4" style="background-color: #443; color: beige;padding: 0%;">
+    <footer class="text-center py-4">
+        <p style="font-size: 8px;">&copy; 2023 AeroStride. All rights reserved. <a data-toggle="modal" data-target="#policiesModal" href="#">Terms & Conditions applied.</a></p>
+      </footer>
+    
+      <div class="modal fade " id="policiesModal" tabindex="-1" role="dialog" aria-labelledby="policiesModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="policiesModalLabel">AeroStride Policies</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ul class="nav nav-tabs" id="policiesTabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="terms-tab" data-toggle="tab" href="#terms" role="tab" aria-controls="terms" aria-selected="true">Terms and Conditions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="return-tab" data-toggle="tab" href="#return" role="tab" aria-controls="return" aria-selected="false">Return Policy</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="policiesTabsContent">
+                <div class="tab-pane fade show active" id="terms" role="tabpanel" aria-labelledby="terms-tab">
+                  <!-- Place your terms and conditions content here -->
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                </div>
+                <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
+                  <!-- Place your return policy content here -->
+                  <p>If you wish to return a product, please follow our return policy guidelines...</p>
+                </div>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+
+    <div class=" py-5" style="background-color: #443; color: beige; margin-top: 8%;margin-left: -20%; margin-right: -20%; margin-bottom: -15%;">
         <div class="container">
             <div class="row " style="margin-left:15%;">
                 <div class="col-md-4">

@@ -55,6 +55,14 @@ class Cart(db.Model):
     price = db.Column(db.Integer, nullable=False)
     size = db.Column(db.Integer, nullable=False)
     date_added = db.Column(db.Integer, nullable=False,default=date.today)
+
+class WishList(db.Model):
+    __tablename__ = "sneakers_wishlist"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    product_id = db.Column(db.Integer, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, unique=False, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    date_added = db.Column(db.Integer, nullable=False,default=date.today)
   
 
 class Purchase(db.Model):
