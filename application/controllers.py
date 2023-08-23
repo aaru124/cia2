@@ -288,7 +288,7 @@ def admin_register():
             user = User(name = username, password = password, admin=True, contact_no=phone, email=email,store_name=store)
             db.session.add(user)
             db.session.commit()
-            session["user"] = username
+            session["admin"] = username
             session["cart"]=json.dumps(dict())
             return redirect("/store-manager/product")
     
@@ -377,7 +377,7 @@ def admin_login():
 
         user = User.query.filter_by(name = username).first()        
         if user is not None and user.admin==True and password==user.password:
-            session["user"]=username
+            session["admin"]=username
             session["cart"]=json.dumps(dict())
             return redirect('/store-manager/product')
         
@@ -394,10 +394,29 @@ def admin_login():
 
 
 
-@app.route("/store-manager/product")
+@app.route("/store-manager/product",methods=["GET","POST"])
 def product():
-    prod = Product.query.all()
-    return render_template("product.html",prod=prod)
+    if request.method=="GET":
+        prod = Product.query.all()
+        order = Order.query.all()
+        return render_template("product.html",prod=prod,order=order)
+    if request.method=="POST":
+        print("hey")
+        if "process" in request.form:
+            o=Order.query.filter_by(id=int(request.form["process"])).first()
+            o.status="In Process"
+            db.session.commit()
+        if "shipped" in request.form:
+            print(request.form["shipped"])
+            o=Order.query.filter_by(id=int(request.form["shipped"])).first()
+            o.status="Shipped"
+            db.session.commit()
+        if "delivered" in request.form:
+            o=Order.query.filter_by(id=int(request.form["delivered"])).first()
+            o.status="Delivered"
+            db.session.commit()
+        return redirect("/store-manager/product")
+        
 
 
 @app.route("/store-manager/product/add", methods=["GET","POST"])
@@ -757,7 +776,25 @@ def account():
 
     if request.method=="GET":
         a=User.query.filter_by(name=session['user']).first()
-        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a)
+        order=Order.query.filter_by(user_id=a.id)
+        purchase=Purchase.query.filter_by(customer_user=a.id)
+        main=[]
+        lst=[]
+        prod=[]
+        for i in order:
+            lst.append(i.id)
+            lst.append(i.date_added)
+            lst.append(i.total_price)
+            lst.append(i.status)
+            for j in purchase:
+                if i.id==j.order_id:
+                    b=Product.query.filter_by(id=j.product).first()
+                    prod.append([b.id,b.brand,b.name,b.price])
+            lst.append(prod)
+            main.append(lst)
+        print(lst)
+
+        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main)
 
 @app.route('/wishlist', methods=["GET","POST"])
 def wishlist():

@@ -19,10 +19,8 @@
     src: url("../static/fonts/TAN-NIMBUS.ttf") format('truetype'); /* Replace with actual font file path */
 }
 
-/* Apply the custom font to specific elements */
 .custom-font {
     font-family: 'CustomFont', sans-serif;
-    /* You can also specify font size, color, etc. here */
 }
 .circular-icon {
             display: inline-flex;
@@ -44,11 +42,12 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand custom-font" href="/home" style="margin-left: 5%;color: white; font-size: 16px;">
+            <img src="../static/logo.png" height="50px" width="50px" style="margin-left: 0%"> 
+            <a class="navbar-brand custom-font" href="/" style="margin-left: 1%;color: white; font-size: 16px;">
                 
                 AeroStride</a>
             
-            <ul class="navbar-nav ml-auto " style="margin-left: 8%;" >
+            <ul class="navbar-nav ml-auto " style="margin-left: 6%;" >
                 <li class="nav-item" style=" color: white;">
                     <a class="nav-link"  href="/" style="color: white;">Home</a>
                 </li>
@@ -102,13 +101,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" style="font-size: 15px;">
                         <p>Are you a Store Manager?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"  style="font-size: 15px;" onclick="hideLogin();" >Cancel</button>
+                        <button type="button" class="btn btn-secondary"  style="font-size: 15px;" onclick="hideLogin();" data-bs-dismiss="modal">Cancel</button>
                         <a href="/admin-login" class="btn btn-primary" style="font-size: 15px;">Log In here</a>
                     </div>
                 </div>

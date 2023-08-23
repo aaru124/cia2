@@ -58,10 +58,9 @@ class Cart(db.Model):
   
 
 class Purchase(db.Model):
-    __tablename__ = "purchases_sneaker_stores"
+    __tablename__ = "purchases_sneakers_stores"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product = db.Column(db.Integer, nullable=False)
-    owner_store = db.Column(db.Integer, nullable=False)
     customer_user = db.Column(db.String, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)

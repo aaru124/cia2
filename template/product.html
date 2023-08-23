@@ -37,6 +37,33 @@
                         <div class="mt-4 mb-2">
                             <a href="/store-manager/product/add" class="btn btn-success btn-block button-length" style=" font-size: 10; background-color: rgb(48, 4, 4); color: antiquewhite;">+ Add Product</a>
                         </div>
+                        {% for i in order %}
+                        <div class="card">
+                            
+                            <div class="card-header">
+                                Order #{{i.id}}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Order Details</h5>
+                                <p class="card-text">Date: {{i.date_added}} </p>
+                                <p class="card-text">Total: Rs.{{i.total_price}}</p>
+                                <p class="card-text">Status: {{i.status}}</p>
+                            </div>
+                            <form method="post" id="myForm">
+                            <div class="card-footer">
+                                <div class="btn-group" role="group">
+                                    {% if i.status=="Shipped" or i.status=="Delivered"%}<button type="submit" class="btn btn-danger" name="process" value="{{i.id}}" id="button1" disabled >In Process</button>
+                                    {% else %}<button type="submit" class="btn btn-danger" name="process" value="{{i.id}}" id="button1" >In Process</button>{% endif %}
+                                    {% if i.status=="Delivered" %}<button type="submit" class="btn btn-secondary" name="shipped" value="{{i.id}}" id="button2"disabled>Shipped</button>
+                                    <button type="submit" class="btn btn-success" name="delivered" value="{{i.id}}" id="submitButton" disabled >Delivered</button>
+                                    {% else %}<button type="submit" class="btn btn-secondary" name="shipped" value="{{i.id}}" id="button2">Shipped</button>
+                                    <button type="submit" class="btn btn-success" name="delivered" value="{{i.id}}" id="submitButton" >Delivered</button>{% endif %}
+                                </div>
+                            </div>
+                        </form>
+                        
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -108,6 +135,8 @@
         function showModal() {            
             $('#addToCartModal').modal('show');
         }
+
+    
     </script>
   
 </body>

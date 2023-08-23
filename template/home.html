@@ -101,7 +101,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" >{{i.name}}</span> </h5>
+                                    <h5 class="card-title" style="display: inline;"><span style="font-weight: bolder;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" >{{i.name}} </h5>
                                 </div>
                                 
                             </div>
@@ -120,9 +120,12 @@
 
                           
                           {% if (i.size_36+i.size_37+i.size_38+i.size_39+i.size_40+i.size_41+i.size_42)==0 %}
-                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);width: 155px;" disabled>Out of Stock</button>
+                          <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: gray; color: rgb(27, 26, 26);width: 55px;" disabled><i id="heartIcon" class="bi bi-heart"></i></button>
+                          <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{i.id}}" style="background-color: gray; color: rgb(27, 26, 26);width: 100px;" disabled>Out of Stock</button>
                           {% else %}
-                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 155px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+                          <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: white; color: rgb(5, 39, 5);width: 55px;" ><i id="heartIcon" class="fas fa-heart"></i></button>
+
+                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 100px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
                           {% endif %}
                         </div>
                     </form>

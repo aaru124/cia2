@@ -539,30 +539,30 @@ section {
         width: 100%;
     }
 }
+body {
+    /* Use the appropriate gradient values */
+    background: linear-gradient(45deg, #FFDAB9, #FFA500, #800080);
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+}
 
-.gradient-background {
-        background: linear-gradient(45deg, #FFDAB9, #FFA500, #800080);
-      }
+ .set{
+    background-color: rgb(250, 252, 99);color: #443;
+ }
+
     </style>
 
 </head>
 
-<body class="gradient-background">
+<body >
     
         
     {% include 'navbar.html' %}
         
 
-        <!--<div class="slider">
-            <div class="photos">
-                <img src="image/img-1.jpeg" class="shown">
-                <img src="image/img-2.jepg">
-                <div class="buttons">
-                    <div class="prev"></div>
-                    <div class="next"></div>
-                </div>
-            </div>
-        </div>-->
         <section class="product " id="product">
             <h1 class="custom-font">POPULAR PRODUCTS</h1>
         
@@ -633,37 +633,6 @@ section {
         </div>
     </div>
 
-    <!-- Include Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
-
-
-    <section class="about" id="about">
-        <h1 class="custom-font">ABOUT US</h1>
-
-        <div class="row">
-            <div class="image">
-                <img src="image/about-img.jpeg" alt="">
-            </div>
-
-            <div class="content">
-                <h3 class="title">something about us</h3>
-                <p>asdfghjklzxcvbnmqwertyuiop</p>
-                <a href="#" class="btn">read more</a>
-                
-            </div>
-        </div>
-    </section>
-
-    
-
-
-       
-
 
     <div class="container mt-5">
         <h1 class="custom-font">TESTIMONIALS</h1>
@@ -672,8 +641,8 @@ section {
                 <div class="carousel-item active">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="text-center">
-                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                            <div class=" card  text-center set" style="background-color: rgb(250, 252, 99);color: #443;border-radius: 15px;">
+                                <i class="fas fa-quote-left fa-3x mt-3"></i>
                                
                                 
                                 <div class="stars">
@@ -683,7 +652,7 @@ section {
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                <p class="mt-4 mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
                                     commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
                                     parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
                                     
@@ -692,8 +661,8 @@ section {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="text-center">
-                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                            <div class=" card text-center set" style="background-color: rgb(250, 252, 99);color: #443;border-radius: 15px;">
+                                <i class="fas fa-quote-left fa-3x mt-3"></i>
                                 <div class="stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -701,7 +670,7 @@ section {
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                <p class="mt-4 mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
                                     commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
                                     parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
                                 <h5>Jane Smith</h5>
@@ -710,11 +679,11 @@ section {
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item ">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="text-center">
-                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                            <div class="card text-center set" style="background-color: rgb(250, 252, 99);color: #443;border-radius: 15px;">
+                                <i class="fas fa-quote-left fa-3x mt-3"></i>
                                 <div class="stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -722,7 +691,7 @@ section {
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                <p class="mt-4 mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
                                     commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
                                     parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
                                 <h5>Michael Johnson</h5>
@@ -730,8 +699,8 @@ section {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="text-center">
-                                <i class="fas fa-quote-left fa-3x mb-3"></i>
+                            <div class="card text-center" style="background-color: rgb(250, 252, 99);color: #443;border-radius: 15px;">
+                                <i class="fas fa-quote-left fa-3x mt-3"></i>
                                 <div class="stars">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -739,7 +708,7 @@ section {
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <p class="mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                                <p class="mt-4 mb-4"> <i class="fas fa-quote-left"></i>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
                                     commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
                                     parturient montes, nascetur ridiculus mus.<i class="fas fa-quote-right"></i></p>
                                 <h5>Amy Brown</h5>

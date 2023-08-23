@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - E-Commerce</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
          @font-face {
     font-family: 'CustomFont';
@@ -56,75 +57,135 @@
     </style>
 </head>
 <body>
-    {% include 'navbar.html' %}
+    <nav class="navbar navbar-expand-lg p-4" style="background-color: rgb(1, 25, 1); height: 150%;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <img src="../static/logo.png" height="50px" width="50px" style="margin-left: 0%"> 
+            <a class="navbar-brand custom-font" href="/" style="margin-left: 1%;color: white; font-size: 16px;">
+                
+                AeroStride</a>
+        
+        <ul class="navbar-nav ml-auto " style="margin-left: 6%;" >
+            <li class="nav-item" style=" color: white;">
+                <a class="nav-link"  href="/" style="color: white;">Home</a>
+            </li>
+            <li class="nav-item" style="margin-left: 50px; color: white;">
+                <a class="nav-link"  href="/sneakers" style="color: white;">Sneakers</a>
+            </li>
+            <li class="nav-item" style="margin-left: 50px; color: white;">
+                <a class="nav-link"  href="/slides" style="color: white;">Slides</a>
+            </li>
+            <li class="nav-item" style="margin-left: 280px; color: white;">
+                <a class="nav-link"  href="/wishlist" style="color: white;">Wishlist <i class="fas fa-heart"></i></a>
+            </li>
+            <li class="nav-item" style=" margin-left: 20px;color: white;">
+                <a class="nav-link"  href="/cart" style="color: white;">Cart <i class="fas fa-shopping-cart"></i></a>
+            </li>
+
+            <li class="nav-item" style=" margin-left: 20px;color: white;">
+                <button class="nav-link" type="button"   style="color: white;" title="are u a store manager?" data-toggle="modal" data-target="#loginModal" onclick="showLogin();"> <i class="fas fa-user-lock"></i></a>
+            </li>
+
+            <li class="nav-item" style="margin-left: 40px;color: white;">
+                
+                {% if var=="Logout" %} 
+                <div class="container nav-item">
+                    
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;font-size: 18px;">
+                                    <i class="fas fa-user-circle"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" href="/account" style="font-size: 15px;">Account Settings</a></li>
+                                    <li><a class="dropdown-item" href="/logout" style="font-size: 15px;">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+               
+                {% elif var=="Login" %}
+                <a class="btn btn-outline-secondary btn-lg" href="{{var1}}" style="color: white;font-size: 12px;">{{var}}</a>
+                {% endif %}
+            </li>
+    
+            
+        </ul>
+    </nav>
+
     <div class="profile mt-4">
         <div class="user-info">
             <div class="user-details">
                 <h2 class="custom-font"> Hello {{u.name}} !</h2>
-                <p>Email: {{u.email}}</p>
-                <p>Address: {{u.address}}</p>
+                <p><span style="font-weight: bold;" >Email:</span> {{u.email}}</p>
+                <p><span style="font-weight: bold;" >Address:</span> {{u.address}}</p>
             </div>
         </div>
         <div class="order-history">
             <h3 class="custom-font">Order History</h3>
-            <div class="order">
-                <p>Order ID: 123456789</p>
-                <p>Date: August 22, 2023</p>
-                <p>Total: $150.00</p>
-                <p>Status: Shipped</p>
-                <div class = "card" style=" margin-inline: auto;   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px; margin-left: auto;margin-right: auto;text-align: center;">
+            {% for lst in main %}
+            <div class="order ">
+                <p><span style="font-weight: bold;" >ID:</span> {{lst[0]}}</p>
+                <p><span style="font-weight: bold;" >Date:</span> {{lst[1]}} </p>
+                <p><span style="font-weight: bold;" >Price:</span> Rs. {{lst[2]}}</p>
+                <p><span style="font-weight: bold;" >Status:</span> {{lst[3]}}</p>
+                {% for i in lst[4]%}
+                <div class = "card mt-4" style=" margin-inline: auto;   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px; margin-left: auto;margin-right: auto;text-align: center;">
                     <section style="height: 100%; width: 60%; min-width: 380px;">
                         <div class=" d-flex align-items-center " style="height: 100%;"></div>
-                            <img class=" img-fluid" src="../static/products/1.png" alt="" style="height: 200px; margin-left: 50%;margin-right: auto;">
-                        </div>
+                            <img class=" img-fluid" src="../static/products/{{i[0]}}.png" alt="" style="height: 200px; margin-left: 50%;margin-right: auto;">
+                        
                     </section>
-                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;">Sneaker Company</p>
-                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;">Fall Limited Edition Sneakers</p>
-                            
-            
-                            <div class="info__pricing d-flex align-items-center" style="margin-block: 1.5rem;">
-                                <span class="info__pricing--price" style="font-weight: 700; color: #000;">$125.00</span>
-                                <span class="info__pricing--discount" style="margin-left: 1rem; padding: 0.2rem 0.5rem; font-weight: 700; color: #e36209; background-color: #f2f2f2; border-radius: 6px;">50%</span>
-                                <span class="info__pricing--before" style="margin-left: auto; font-weight: 700; color: #757575;">$250.00</span>
-                            </div>
+                    <div class="card-footer ">
+                        <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;text-align: left;"> {{i[1]}}</p>
+                        <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[2]}}   </p>
+                        <p class="product__info--title" style="margin-block: 1rem; font-size: 1rem; color: #000;text-align: left;font-weight: 700;"> {{i[3]}}   </p>
+                    </div>
+                </div>
+                                
+             
                     
-                    <div class="flex-container" style="display: flex; justify-content: flex-end">
+                    <div class="flex-container mt-4" style="display: flex; justify-content: flex-end">
                     <button type="button" style=" display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">Return</button>
                     <button type="button" style="display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;"><i class="fas fa-phone"></i> Help</button>
                 </div>
+                {% endfor %}
                 </div>
+                {% endfor %}
             </div>
-            <div class="order">
-                <p>Order ID: 123456789</p>
-                <p>Date: August 22, 2023</p>
-                <p>Total: $150.00</p>
-                <p>Status: Shipped</p>
-                <div class = "card" style="display: flex; width: 75%; margin-inline: auto; padding-block: 2.5rem; justify-content: center; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px;">
-                    <section style="height: 100%; width: 60%; min-width: 380px;">
-                        <div class=" d-flex align-items-center " style="height: 100%;"></div>
-                            <img class=" img-fluid" src="img1.jpeg" alt="" style="text-align: center;">
-                        </div>
-                    </section>
-                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;">Sneaker Company</p>
-                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;">Fall Limited Edition Sneakers</p>
-                            
             
-                            <div class="info__pricing d-flex align-items-center" style="margin-block: 1.5rem;">
-                                <span class="info__pricing--price" style="font-weight: 700; color: #000;">$125.00</span>
-                                <span class="info__pricing--discount" style="margin-left: 1rem; padding: 0.2rem 0.5rem; font-weight: 700; color: #e36209; background-color: #f2f2f2; border-radius: 6px;">50%</span>
-                                <span class="info__pricing--before" style="margin-left: auto; font-weight: 700; color: #757575;">$250.00</span>
-                            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
                     
-                    <div class="flex-container" style="display: flex; justify-content: flex-start">
-                    <button type="button" style=" display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">Return</button>
-                    <button type="button" style="display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">&#63;</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: 15px;">
+                    <p>Are you a Store Manager?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  style="font-size: 15px;" onclick="hideLogin();" >Cancel</button>
+                    <a href="/admin-login" class="btn btn-primary" style="font-size: 15px;">Log In here</a>
                 </div>
             </div>
-            <!-- More order entries can be added here -->
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showLogin() {            
+        $('#loginModal').modal('show');
+    }
+    function hideLogin(){
+        $('#loginModal').modal('hide');
+    }
+    </script>
 </body>
 </html>
