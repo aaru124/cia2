@@ -5,6 +5,7 @@ import stripe
 from application.models import User, db, Product, Purchase, Order, Cart, WishList
 import re
 import json
+from sqlalchemy import or_
 
 
 @app.route('/')
@@ -176,8 +177,32 @@ def sneaker():
                     p[i.product]=i.quantity
                 else:
                     p[i.product]+=i.quantity
-            lst=list(p.values())
-            lst.sort(reverse=True)
+            p_sort = dict(sorted(p.items(), key=lambda item: item[1], reverse=True))
+            prod=[]
+            for i in p_sort:
+                p=Product.query.filter_by(id=int(i)).first()
+                if p.category_name=="sneakers":
+                    prod.append(p)
+            if request.form["sort"]=="popularity":
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="popularity")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="popularity")
+            
+            if request.form["sort"]=="price_l_h":
+                prod = (Product.query.filter(or_(Product.category_name.contains("sneakers"))).order_by(Product.price).all())
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="Price(Low to High)")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="Price(Low to High)")
+            
+            if request.form["sort"]=="price_h_l":
+                prod = (Product.query.filter(or_(Product.category_name.contains("sneakers"))).order_by(Product.price.desc()).all())
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="Price(High to Low)")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="Price(High to Low)")
+
             
             
         elif "user" not in session:
@@ -856,7 +881,7 @@ def search(val):
       
         p_new=[]
         for i in p:
-            if val in i.name or val in str(int(i.price)) or val in i.date_added or val in i.category_name:
+            if i.category_name=="sneakers" and val in i.name or val in str(int(i.price)) or val in i.date_added:
                 p_new.append(i)
         
         if "user" not in session:
@@ -1121,3 +1146,9 @@ def about():
     if "user" in session:
         print("hey in session")
         return render_template("about.html",var="Logout" ,var1="/logout")
+    
+@app.route('/save_payment', methods=['POST'])
+def save_payment():
+    payment_data = request.json  
+    print(payment_data)
+    return 'Payment details saved'

@@ -250,7 +250,25 @@ body {
                     order_id: '',  // Generate an order ID from your backend
                     handler: function(response) {
                         // Handle payment success, response will contain payment details
-                        console.log(response);
+                        var paymentData = {
+                    paymentId: response.razorpay_payment_id,
+                    orderId: response.razorpay_order_id,
+                    signature: response.razorpay_signature,
+                    amount: response.razorpay_amount,
+                    paymentMethod: response.method
+                };
+
+                // Send payment data to your Flask app
+                fetch('/save_payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paymentData)
+                }).then(response => response.text())
+                  .then(result => console.log(result))
+                  .catch(error => console.error('Error:', error));
+
                         window.location.replace("/thank-you");
                     },
                     prefill: {

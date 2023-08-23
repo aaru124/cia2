@@ -137,7 +137,7 @@ body {
                 <form method="post">
                     <div class="card-footer" style="text-align: end;">
 
-                        <button type="button"  class="btn btn-primary" style=" font-size: 10; background-color: rgb(48, 4, 4); color: antiquewhite; text-align: right;" onclick="showModal();">Add to Cart</a>
+                        <button type="button"  class="btn btn-primary" style=" font-size: 10; background-color: rgb(48, 4, 4); color: antiquewhite; text-align: right;" onclick="showModal();" value="{{i.id}}" name="product">Add to Cart</a>
                         <button type="submit" name="wishlist_remove" class="btn btn-danger" style=" font-size: 10; background-color: rgb(131, 12, 12); color: antiquewhite;text-align: right;">Remove</a>
                     </div>
                 </form>
@@ -146,6 +146,7 @@ body {
                
             </div>
             </div>
+            {% endfor %}
            
     </div>
 
@@ -167,6 +168,7 @@ body {
             </div>
         </div>
     </div>
+   
 
     <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -198,14 +200,14 @@ body {
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" name="product" value="{{i.id}}">Add to Cart</button>
+              <button type="submit" class="btn btn-primary" name="product" >Add to Cart</button>
             </div>
         </form>
           </div>
         </div>
       </div>
     
-      {% endfor %}
+     
 
       
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
