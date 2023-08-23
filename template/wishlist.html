@@ -134,6 +134,8 @@ body {
                         <div class="flex-column">
                     <span class="card-text"><span class="info__pricing--price" style="font-weight: 700; color: #000; text-align:start"> {{i.name}}</span></span>
                 </div>
+
+                
                 <form method="post">
                     <div class="card-footer" style="text-align: end;">
 
@@ -142,7 +144,42 @@ body {
                     </div>
                 </form>
                
-                
+                <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
+                          
+                        </div>
+                        <div class="modal-body">
+                          <form method="post">
+                            <div class="mb-3">
+                              <label for="size" class="form-label">Size:</label>
+                              <select class="form-select" id="size" name="size">
+                                <option value="36">36</option>
+                                <option value="37">37</option>
+                                <option value="38">38</option>
+                                <option value="39">39</option>
+                                <option value="40">40</option>
+                                <option value="41">41</option>
+                                <option value="42">42</option>
+                                
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label for="quantity" class="form-label">Quantity:</label>
+                              <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
+                            </div>
+                          
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary" name="product" value="{{i.id}}">Add to Cart</button>
+                        </div>
+                    </form>
+                      </div>
+                    </div>
+                  </div>
                
             </div>
             </div>
@@ -170,42 +207,7 @@ body {
     </div>
    
 
-    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
-              
-            </div>
-            <div class="modal-body">
-              <form method="post">
-                <div class="mb-3">
-                  <label for="size" class="form-label">Size:</label>
-                  <select class="form-select" id="size" name="size">
-                    <option value="36">36</option>
-                    <option value="37">37</option>
-                    <option value="38">38</option>
-                    <option value="39">39</option>
-                    <option value="40">40</option>
-                    <option value="41">41</option>
-                    <option value="42">42</option>
-                    
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="quantity" class="form-label">Quantity:</label>
-                  <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
-                </div>
-              
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" name="product" >Add to Cart</button>
-            </div>
-        </form>
-          </div>
-        </div>
-      </div>
+   
     
      
 

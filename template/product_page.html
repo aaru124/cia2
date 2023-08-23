@@ -32,6 +32,16 @@ body {
     margin: 0; /* Reset default margin */
     padding: 0; /* Reset default padding */
 }
+.star {
+  font-size: 24px;
+  color: #ccc;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.star.filled {
+  color: rgb(183, 156, 5); /* Color for filled stars */
+}
   </style>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -111,33 +121,48 @@ body {
           <span class="info__pricing--discount">{{prod.discount}}%</span>
           <span class="info__pricing--before"><strike>Rs.{{prod.price}}</strike></span>
           {% endif %}
+        <form method="post">
           <div class="mb-3" style="padding-right: 9%;">
             <label for="size" class="form-label">Size:</label>
             <select class="form-select" id="size" name="size">
+              {% if prod.size_36!=0 %}
               <option value="36">36</option>
+              {% endif %}
+              {% if prod.size_37!=0 %}
               <option value="37">37</option>
+              {% endif %}
+              {% if prod.size_38!=0 %}
               <option value="38">38</option>
+              {% endif %}
+              {% if prod.size_39!=0 %}
               <option value="39">39</option>
+              {% endif %}
+              {% if prod.size_40!=0 %}
               <option value="40">40</option>
+              {% endif %}
+              {% if prod.size_41!=0 %}
               <option value="41">41</option>
+              {% endif %}
+              {% if prod.size_42!=0 %}
               <option value="42">42</option>
-              
+              {% endif %}
             </select>
           </div>
+          
       <div class="mb-3" style="padding-right: 9%;">
-        <input type="number" class="form-control" id="quantity" value="1" min="1" placeholder="Quantity" padding="10px">
+        <input type="number" class="form-control" name="quantity" value="1" min="1" placeholder="Quantity" padding="10px">
       </div>
-      <form method="post">
+      
         <div style="text-align: end; padding-right: 9%;">
         
             {% if heart=="true" %}
             <button class="btn btn-outline-secondary" type="submit" name="wishlist_remove" value="{{prod.id}}"  style="background-color: white; color: rgb(5, 39, 5)" ><i id="heartIcon" class="fas fa-heart" style="color: red;"></i></button>  
-            <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{prod.id}}" style="color: white;background-color: rgb(5, 39, 5)" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+            <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{prod.id}}" style="color: white;background-color: rgb(5, 39, 5)"  >Add to Cart</button>
         
              
              {% else %}
              <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{prod.id}}"  style="background-color: white; color: rgb(5, 39, 5)" ><i id="heartIcon" class="fas fa-heart" ></i></button>                        
-            <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{prod.id}}" style="color: white;background-color: rgb(5, 39, 5)" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+            <button class="btn btn-outline-secondary" type="submit" id="add" name="product" value="{{prod.id}}" style="color: white;background-color: rgb(5, 39, 5)" >Add to Cart</button>
             {% endif %}
           </div>
       </form>
@@ -148,17 +173,62 @@ body {
 
     </div>
 
-    <div class="card" style="display: flex; width: 75%; margin-inline: auto; margin-top:50px; padding-block: 2.5rem; justify-content: center; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px; text-align: left; background-color: rgb(244, 223, 172);">
-      <p>review1</p>
+    {% if c!=0 %}
+    <div class="card" style="display: flex; width: 95%; margin-inline: auto; margin-top:50px; padding-block: 2.5rem; justify-content: center; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px; text-align: left; background-color: rgb(244, 223, 172);">
+      {% for i in rev %}
+      
+      <p class="rating" style="text-align: right;">
+        {% for i in range(i.rating) %}
+        <span class="star filled"><i class="fas fa-star"></i></span>
+        {% endfor %}
+        {% for i in range(5-i.rating) %}
+        <span class="star"><i class="fas fa-star"></i></span>
+        {% endfor %}
+      </p>
+      
+      <p>{{i.content}}</p>
        <hr class="my-3">
-      <p>review2</p>
+      {% endfor %}
     </div>
+    {% endif %}
 
-    <div class="col-md-6" style="text-align: center; margin-top: 20px;">
-      <input type="textField" class="form-control" placeholer="Write a review..." style=" width: 300px; height:200px; padding: 10px; margin-left:75%">
-      <button class="btn btn-sm btn-primary" style="margin-left:100%; margin-top:20px" >Submit</button>
+     <form method="post">
+     
+        <div class="card-body mt-4" style=" width: 730px;margin-left: 12%;height: 90px; margin-bottom: -3%;">
+          <div class="col-md-8 py-4" style="text-align: center;">
+              <div class="row">
+                <div class="col-md-2">
+                  <label>Rating:</label>
+                </div>
+                <div class="col-md-2" >
+                  <input type="number" class="form-control" name="rating" style="margin-left: 5%;">
 
-      </div>
+                </div>
+                <div class="col-md-2" style="text-align: left;">
+                  <label>/ 5</label>
+
+                </div>
+              </div>
+              
+           
+            
+            
+            
+           
+          </div>
+          
+        </div>
+      
+          <div class="col-md-6 py-4" style="text-align: center;">
+      
+            <input type="textField" class="form-control" placeholder="Write a review.." style="margin-left: 23%; width: 730px; height: 170px;" name="review">
+            <button type="submit" class="btn btn-sm btn-primary" style="margin-left:100%; margin-top:20px" >Submit</button>
+      
+            </div>
+        
+      
+     </form>
+    
 
 </div>
 
@@ -220,42 +290,7 @@ body {
         </div>
     </div>
 
-    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
-              
-            </div>
-            <div class="modal-body">
-              <form method="post">
-                <div class="mb-3">
-                  <label for="size" class="form-label">Size:</label>
-                  <select class="form-select" id="size" name="size">
-                    <option value="36">36</option>
-                    <option value="37">37</option>
-                    <option value="38">38</option>
-                    <option value="39">39</option>
-                    <option value="40">40</option>
-                    <option value="41">41</option>
-                    <option value="42">42</option>
-                    
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="quantity" class="form-label">Quantity:</label>
-                  <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
-                </div>
-              
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" name="product" value="{{prod.id}}">Add to Cart</button>
-            </div>
-        </form>
-          </div>
-        </div>
-      </div>
+    
 
 <!-- Add Bootstrap JS and jQuery scripts here (before the closing </body> tag) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

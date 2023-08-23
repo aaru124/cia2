@@ -19,7 +19,7 @@ class User(db.Model):
 
 
 class Product(db.Model):
-    __tablename__ = "sneakers_product"
+    __tablename__ = "sneakers_products"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, unique=False, nullable=False)
     category_name=db.Column(db.String, nullable=False)
@@ -66,7 +66,7 @@ class WishList(db.Model):
   
 
 class Purchase(db.Model):
-    __tablename__ = "purchases_sneakers_stores"
+    __tablename__ = "purchases_sneakers_stores_n"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product = db.Column(db.Integer, nullable=False)
     customer_user = db.Column(db.String, nullable=False)
@@ -74,12 +74,33 @@ class Purchase(db.Model):
     price = db.Column(db.Float, nullable=False)
     date_added = db.Column(db.Date, nullable=False, default=date.today)
     order_id = db.Column(db.Integer, nullable=False)
+    size = db.Column(db.Integer, nullable=False)
 
 class Order(db.Model):
-    __tablename__ = "sneaker_orders"
+    __tablename__ = "sneaker_orders_n"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, nullable=False)
     total_price =db.Column(db.Float, nullable=False)
     payment_method = db.Column(db.String, nullable=False)
     date_added = db.Column(db.Date, nullable=False, default=date.today)
     status = db.Column(db.String, nullable=False, default="In Process")
+    returned = db.Column(db.String, nullable=False, default="No")
+    cancelled = db.Column(db.String, nullable=False, default="No")
+
+class Payments(db.Model):
+    __tablename__ = "aerostride_trans"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    order_id = db.Column(db.Integer, nullable=False)
+    payment_id = db.Column(db.Integer, nullable=False)
+    total_price =db.Column(db.Float, nullable=False)
+    payment_method = db.Column(db.String, nullable=False)
+    date_added = db.Column(db.Date, nullable=False, default=date.today)
+    refund = db.Column(db.String, nullable=False, default="no")
+
+class Issue(db.Model):
+    __tablename__ = "sneaker_issues"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.String, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    order_id = db.Column(db.Integer, nullable=False)
+

@@ -131,7 +131,7 @@ body {
               <button type="button" class="btn btn-secondary" id="decreaseBtn" style="height: 30px;width: 30px; font-size: 10px;">-</button>
               
           </td>
-            <td id="total_{{ product.id }}">Rs.{{ price }}</td>
+            <td id="total_{{ product.id }}">Rs. {{ price }}</td>
             <td><button class="btn btn-danger btn-sm" type="submit" name="remove" value="{{size.id}}">
                 <i class="fa fa-trash"></i> Remove
             </a></td>
@@ -250,12 +250,12 @@ body {
                     order_id: '',  // Generate an order ID from your backend
                     handler: function(response) {
                         // Handle payment success, response will contain payment details
+                        
                         var paymentData = {
                     paymentId: response.razorpay_payment_id,
-                    orderId: response.razorpay_order_id,
-                    signature: response.razorpay_signature,
-                    amount: response.razorpay_amount,
-                    paymentMethod: response.method
+                    orderId: response.order_id,
+                    amount: response.amount,
+                    paymentMethod: response.razorpay_payment_method
                 };
 
                 // Send payment data to your Flask app

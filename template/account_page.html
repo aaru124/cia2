@@ -131,6 +131,7 @@
         </div>
                 <p><span style="font-weight: bold;" >Email:</span> {{u.email}}</p>
                 <p><span style="font-weight: bold;" >Address:</span> {{u.address}}</p>
+                <p><span style="font-weight: bold;" >Contact No:</span> {{u.contact_no}}</p>
             </div>
         </div>
         <div class="order-history">
@@ -164,6 +165,8 @@
                             <div class="col-md-10">
                                 <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;text-align: left;"> {{i[1]}}</p>
                                 <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[2]}}   </p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[4]}}   </p>
+
                                 <p class="product__info--title" style="margin-block: 1rem; font-size: 1rem; color: #000;text-align: left;font-weight: 700;"> {{i[3]}}   </p>
                             </div>
                            <div class="col-md-2">
@@ -180,6 +183,31 @@
                     
                     
                 {% endfor %}
+                </div>
+                <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="post">
+                        <div class="modal-content">
+                            
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Send us a message!</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="inputText" class="form-label" name="email">Email Address<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="inputText" name="email" required>
+                                    <input type="text" class="form-control" id="inputText" name="msg" placeholder="Enter your issue..." style="height:300px; margin-top: 20px">
+                
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="help" value="{{lst[0]}}">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -205,28 +233,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Send us a message!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="inputText" class="form-label">Email Address<span style="color: red;">*</span></label>
-                        <input type="text" class="form-control" id="inputText" required>
-                        <input type="text" class="form-control" id="inputText"  placeholder="Enter your issue..." style="height:300px; margin-top: 20px">
     
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

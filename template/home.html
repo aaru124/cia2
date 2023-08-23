@@ -162,12 +162,61 @@
                            {% else %}
                            
                            <button class="btn btn-outline-secondary" type="submit" name="wishlist" value="{{i.id}}"  style="background-color: white; color: rgb(5, 39, 5);width: 55px;" ><i id="heartIcon" class="fas fa-heart" ></i></button>                        
-                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 100px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal();">Add to Cart</button>
+                          <button class="btn btn-outline-secondary" type="button" id="add" name="product" value="{{i.id}}" style="color: white;background-color: rgb(5, 39, 5);width: 100px;" data-bs-toggle="modal" data-bs-target="#addToCartModal" onclick="showModal('{{i.id}}');" id="sendValue">Add to Cart</button>
                             {% endif %}
                           {% endif %}
                         </div>
                     </form>
-                    
+                    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
+                              
+                            </div>
+                            <div class="modal-body">
+                              <form method="post">
+                                <div class="mb-3">
+                                  <label for="size" class="form-label">Size:</label>
+                                  <select class="form-select" id="size" name="size">
+                                    {% if i.size_36 %}
+                                    <option value="36">36</option>
+                                    {% endif %}
+                                    {% if i.size_37 %}
+                                    <option value="37">37</option>
+                                    {% endif %}
+                                    {% if i.size_38 %}
+                                    <option value="38">38</option>
+                                    {% endif %}
+                                    {% if i.size_39 %}
+                                    <option value="39">39</option>
+                                    {% endif %}
+                                    {% if i.size_40 %}
+                                    <option value="40">40</option>
+                                    {% endif %}
+                                    {% if i.size_41 %}
+                                    <option value="41">41</option>
+                                    {% endif %}
+                                    {% if i.size_42 %}
+                                    <option value="42">42</option>
+                                    {% endif %}
+                                  </select>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="quantity" class="form-label">Quantity:</label>
+                                  <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
+                                </div>
+                              
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" name="product" id="takeValue" value="{{i.id}}">Add to Cart</button>
+                            </div>
+                        </form>
+                          </div>
+                        </div>
+                      </div>
+                     
                 </div>
                 {% endfor %}
          
@@ -178,43 +227,7 @@
 </div>
 
 
-<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title custom-font" id="addToCartModalLabel">Select Size and Quantity</h5>
-          
-        </div>
-        <div class="modal-body">
-          <form method="post">
-            <div class="mb-3">
-              <label for="size" class="form-label">Size:</label>
-              <select class="form-select" id="size" name="size">
-                <option value="36">36</option>
-                <option value="37">37</option>
-                <option value="38">38</option>
-                <option value="39">39</option>
-                <option value="40">40</option>
-                <option value="41">41</option>
-                <option value="42">42</option>
-                
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="quantity" class="form-label">Quantity:</label>
-              <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1">
-            </div>
-          
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="product" >Add to Cart</button>
-        </div>
-    </form>
-      </div>
-    </div>
-  </div>
- 
+
 
   <footer class="text-center py-4">
     <p style="font-size: 8px;">&copy; 2023 AeroStride. All rights reserved. <a data-toggle="modal" data-target="#policiesModal" href="#">Terms & Conditions applied.</a></p>
@@ -261,11 +274,13 @@
    
     const inputBox = document.getElementById('inputBox');
     const anchorTag = document.getElementById('anchorTag');
+   
 
     inputBox.addEventListener('input', () => {
     anchorTag.href=`/sneakers/search/${inputBox.value}`;
   });
-  function showModal() {            
+  function showModal(id) { 
+            
             $('#addToCartModal').modal('show');
         }
   

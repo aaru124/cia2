@@ -2,10 +2,12 @@ from flask import jsonify, render_template, request, session, redirect
 from flask import current_app as app
 import razorpay
 import stripe
-from application.models import User, db, Product, Purchase, Order, Cart, WishList
+from application.models import User, db, Product, Purchase, Order, Cart, WishList, Payments, Issue, Review
 import re
 import json
 from sqlalchemy import or_
+from flask_mail import Mail
+from flask_mail import Message
 
 
 @app.route('/')
@@ -21,20 +23,25 @@ def welcome():
     lst.sort(reverse=True)
     final=[]
     ctr=0
+    no_pop="false"
     for i in p:
         if p[i] in lst and ctr<2:
             final.append(i)
             ctr+=1
-    print(final)
-    p1=Product.query.filter_by(id=final[0]).first()
-    p2=Product.query.filter_by(id=final[1]).first()
+    if len(final)<2:
+        no_pop="true"
+        p1=Product.query.all()
+        p2=Product.query.all()
+    else:
+        p1=Product.query.filter_by(id=final[0]).first()
+        p2=Product.query.filter_by(id=final[1]).first()
 
     if "user" not in session:
         session["guest"]="yes"
-        return render_template("main.html",var="Login",var1="/user-login",p1=p1,p2=p2)
+        return render_template("main.html",var="Login",var1="/user-login",p1=p1,p2=p2,no_pop=no_pop)
     if "user" in session:
         print("hey in session")
-        return render_template("main.html",var="Logout" ,var1="/logout",p1=p1,p2=p2)
+        return render_template("main.html",var="Logout" ,var1="/logout",p1=p1,p2=p2,no_pop=no_pop)
     return render_template("main.html",var="Login",var1="/user-login")
     
 
@@ -242,91 +249,64 @@ def slide():
             product_id= request.form["product"]
             count = request.form["quantity"]
             size = request.form["size"]
-            product = Product.query.filter_by(id = product_id).first()
-        
-            cart = json.loads(session["cart"])
-            if size=="36":
-                if product.size_36<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_36):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_36):
-                            cart[product_id] = count
-            if size=="37":
-                if product.size_37<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_37):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_37):
-                            cart[product_id] = count
-            if size=="38":
-                if product.size_38<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_38):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_38):
-                            cart[product_id] = count
-            if size=="39":
-                if product.size_39<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_39):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_39):
-                            cart[product_id] = count
-            
-            if size=="40":
-                if product.size_40<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_40):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_40):
-                            cart[product_id] = count
-            
-            if size=="41":
-                if product.size_41<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_41):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_41):
-                            cart[product_id] = count
-            
-            if size=="42":
-                if product.size_42<int(count):
-                    return render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max)
-                elif product_id in cart:
-                    current = int(count) + int(cart[product_id])
-                    if current <= int(product.size_42):
-                        cart[product_id] = str(int(cart[product_id]) + int(count))
-                    else:
-                        current = int(count)
-                        if current <= int(product.size_42):
-                            cart[product_id] = count
+            product = Product.query.filter_by(id = int(product_id)).first()
+            u=User.query.filter_by(name=session["user"]).first()
+            cart = Cart.query.filter_by(user_id=u.id)
+            flag=1
+            for i in cart:
+                
+                if i.product_id==int(product_id) and i.size==int(size):
+                    
+                    flag=0
+                    if size=="36":
+                        if product.size_36<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                            
+                    if size=="37":
+                        if product.size_37<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="38":
+                        if product.size_38<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="39":
+                        if product.size_39<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="40":
+                        if product.size_40<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="41":
+                        if product.size_41<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+                    if size=="42":
+                        if product.size_42<int(count):
+                            render_template("home.html", error1="Quantity added is more than the stock available.",prod=prod,max=max,var="Logout")
+                        else:
+                            i.quantity=i.quantity+int(count)
+                            db.session.commit()
+            if flag==1:
+                c = Cart(product_id=product.id, user_id=u.id, quantity=int(count), price=product.price ,size=int(size))
+                db.session.add(c)
+                db.session.commit()
 
-            session["cart"] = json.dumps(cart)
             return redirect("/slides")
         if "min_price" in request.form:
 
@@ -360,6 +340,40 @@ def slide():
                     flag=i
             db.session.delete(flag)
             db.session.commit()
+        if "sort" in request.form:
+            purch=Purchase.query.all()
+            p={}
+            for i in purch:
+                
+                if i.product not in p:
+                    p[i.product]=i.quantity
+                else:
+                    p[i.product]+=i.quantity
+            p_sort = dict(sorted(p.items(), key=lambda item: item[1], reverse=True))
+            prod=[]
+            for i in p_sort:
+                p=Product.query.filter_by(id=int(i)).first()
+                if p.category_name=="slides":
+                    prod.append(p)
+            if request.form["sort"]=="popularity":
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="popularity")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="popularity")
+            
+            if request.form["sort"]=="price_l_h":
+                prod = (Product.query.filter(or_(Product.category_name.contains("slides"))).order_by(Product.price).all())
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="Price(Low to High)")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="Price(Low to High)")
+            
+            if request.form["sort"]=="price_h_l":
+                prod = (Product.query.filter(or_(Product.category_name.contains("slides"))).order_by(Product.price.desc()).all())
+                if "user" not in session:
+                    return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",sort_name="Price(High to Low)")
+                if "user" in session:
+                    return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,sort_name="Price(High to Low)")
                 
         elif "user" not in session:
             return render_template("home.html", error="You are not logged in.",prod=prod,  max=max)
@@ -550,8 +564,8 @@ def add_product():
         return render_template("add_product.html")
      
         
-    if request.method=="POST" and "user" in session:
-        user = User.query.filter_by(name=session["user"]).first()      
+    if "user" in session:
+        user = User.query.filter_by(name=session["admin"]).first()      
         if user.admin:                  
             if request.method == "POST":
                 name = request.form["product_name"]
@@ -581,7 +595,7 @@ def add_product():
 def delete_product(product_id):
     p=int(product_id)
     prod = Product.query.all()
-    user=session["user"]
+    user=session["admin"]
     user = User.query.filter_by(name = user).first()
     if request.method=="GET":
         return render_template("product.html",prod=prod,delete="yes",edit="no")
@@ -748,13 +762,16 @@ def product_page(val):
                     heart="true"
         p = Product.query.filter_by(id=int(val)).first()
         new_price=p.price
-        
+        u=User.query.filter_by(name=session["user"]).first()
+        r=Review.query.filter((Review.user_id == u.id) & (Review.prod_id == int(val))).all()
+        r_count=Review.query.filter((Review.user_id == u.id) & (Review.prod_id == int(val))).count()
+        print(r_count)
         if p.discount:
             new_price=p.price-(p.price*(p.discount/100))
         if "user" not in session:
             return render_template("product_page.html",prod=p,var="Login",var1="/user-login",error="",p=new_price)
         if "user" in session:
-            return render_template("product_page.html",prod=p,var="Logout" ,var1="/logout",error="",p=new_price,heart=heart)
+            return render_template("product_page.html",prod=p,var="Logout" ,var1="/logout",error="",p=new_price,heart=heart,rev=r,c=r_count)
     
     if request.method=="POST":
         id=int(val)
@@ -784,11 +801,20 @@ def product_page(val):
             db.session.commit()
             return redirect("/product_page/"+str(id))
         
+        if "review" in request.form and "user" in session:
+            rev=request.form['review']
+            rate=request.form["rating"]
+            u=User.query.filter_by(name=session["user"]).first()
+            r=Review(content=rev,rating=rate,user_id=u.id,prod_id=id)
+            db.session.add(r)
+            db.session.commit()
+        
         if "product" in request.form :
            
             product_id= request.form["product"]
-            count = request.form["quantity"]
             size = request.form["size"]
+            count = request.form["quantity"]
+            
             u=User.query.filter_by(name=session['user']).first()
             w_check=WishList.query.filter_by(user_id=u.id)
             for i in w_check:
@@ -1027,13 +1053,26 @@ def account():
             for j in purchase:
                 if i.id==j.order_id:
                     b=Product.query.filter_by(id=j.product).first()
-                    prod.append([b.id,b.brand,b.name,b.price])
+                    prod.append([b.id,b.brand,b.name,b.price,j.size])
             lst.append(prod)
             main.append(lst)
         reward=reward*(0.01)
 
 
         return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main,reward=int(reward))
+    
+    if request.method=="POST":
+        if "help" in request.form:
+            email=request.form['email']
+            message=request.form['msg']
+            user=User.query.filter_by(name=session['user']).first()
+            id=request.form['help']
+            i=Issue(order_id=int(id),content=message,user_id=user.id)
+            db.session.add(i)
+            db.session.commit()
+            send_email(email, message)
+        return redirect("/account")
+
 
 
 @app.route('/wishlist', methods=["GET","POST"])
@@ -1149,6 +1188,88 @@ def about():
     
 @app.route('/save_payment', methods=['POST'])
 def save_payment():
+    total = 0
+    user = User.query.filter_by(name=session["user"]).first() 
+    if "user" in session: 
+        user = User.query.filter_by(name=session["user"]).first() 
+        cart = Cart.query.filter_by(user_id=user.id)
+        products=[]
+        rate_list=[]
+        for i in cart:
+            
+            el=[]
+            p=Product.query.filter_by(id = i.product_id).first()
+            r=int(i.price*i.quantity)
+            c=i.quantity
+            s=i.size
+            el.append(p)
+            el.append(c)
+            el.append(r)
+            el.append(i)
+            rate_list.append(r)
+            products.append(el)
+        
+        if len(rate_list)!=0:
+            total = sum(rate_list)
+    
     payment_data = request.json  
-    print(payment_data)
+    p_id = payment_data.get('paymentId')
+    client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
+    a=client.payment.fetch(p_id)
+    order=Order(total_price=a['amount']/100,payment_method=a['method'],user_id=user.id)
+    db.session.add(order)
+    db.session.commit() 
+
+    for product, count, rate,size in products:
+        size=size.size
+        print(size, product.id)
+        if size==36:
+            product.size_36 -= int(count)
+            db.session.commit()
+        if size==37:
+            product.size_37 -= int(count)
+            db.session.commit()
+
+        if size==38:
+            product.size_38 -= int(count)
+            db.session.commit()
+        if size==39:
+            product.size_39 -= int(count)
+            db.session.commit()
+        if size==40:
+            product.size_40 -= int(count)
+            db.session.commit()
+        if size==41:
+            product.size_41 -= int(count)
+            db.session.commit()
+        if size==42:
+            product.size_42 -= int(count)
+            db.session.commit()
+        purhcase=Purchase(product=product.id,customer_user=user.id,quantity=count,price=rate,order_id=order.id,size=size)
+        db.session.add(purhcase)
+        db.session.commit()   
+
+    
+    for i in cart:
+        db.session.delete(i)
+        db.session.commit()
+    
+    
+    
+    t1=Payments(payment_id=p_id,payment_method=a['method'],order_id=order.id,total_price=a['amount']/100)
+    db.session.add(t1)
+    db.session.commit()
+    
+
+
+
     return 'Payment details saved'
+
+mail = Mail(app)
+def send_email(sender_email, message):
+    recipient1 = 'annitjacob@gmail.com'
+    recipient2 = 'paridaaarushi124@gmail.com'
+    subject = 'Message from User'
+    msg = Message(subject, recipients=[recipient1,recipient2], sender='aerostride222@gmail.com')
+    msg.body = f"Sender's Email: {sender_email}\n\nMessage:\n{message}"
+    mail.send(msg)

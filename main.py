@@ -4,8 +4,10 @@ import razorpay
 from application.database import db
 from flask_migrate import Migrate
 from flask_admin import Admin
+from flask_mail import Mail
+from flask_mail import Message
 from flask_admin.contrib.sqla import ModelView
-from application.models import User, Product, Purchase, Order, Review, Cart, WishList
+from application.models import User, Product, Purchase, Order, Review, Cart, WishList, Payments, Issue
 import stripe
 
 def create_app():
@@ -13,6 +15,13 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = "abcd234"
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USERNAME'] = 'aerostride222@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'aofwwafmtnkoelhy'
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+    app.config['MAIL_DEFAULT_SENDER'] = 'aerostride222@gmail.com'
 
     razorpay_client = razorpay.Client(auth=("rzp_test_XOy0arNBRKuF4z", "eGVaXmXbQbQWygImcrjIaQ8i"))
 
@@ -25,6 +34,7 @@ def create_app():
 app = create_app()
 migrate = Migrate(app, db)
 admin = Admin(app)
+mail = Mail(app)
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Review, db.session))
 admin.add_view(ModelView(Product, db.session))
@@ -32,6 +42,8 @@ admin.add_view(ModelView(Purchase, db.session))
 admin.add_view(ModelView(Order, db.session))
 admin.add_view(ModelView(Cart, db.session))
 admin.add_view(ModelView(WishList, db.session))
+admin.add_view(ModelView(Payments, db.session))
+admin.add_view(ModelView(Issue, db.session))
 
 from application.controllers import *
 
