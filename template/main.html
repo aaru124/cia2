@@ -34,7 +34,31 @@
     padding-bottom: 3%;
     /* You can also specify font size, color, etc. here */
 }
- 
+
+.user-chat{
+            border-radius: 5px;
+    width: fit-content;
+    position: relative;
+    /*padding: 5px 10px;*/
+    background: #d2d6de;
+    border: 1px solid #d2d6de;
+    text-align: right;
+            background-color: #3498db;
+            color: white;
+        }
+
+        .expert-chat{
+            border-radius: 5px;
+    width: fit-content;
+    position: relative;
+    padding: 5px 10px;
+    background: #d2d6de;
+    border: 1px solid #d2d6de;
+    margin: 5px 0 0 50px;
+            background-color: #16d660;
+            color: white;
+            align-self: flex-start;
+        }
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
 
 :root {
@@ -554,6 +578,8 @@ body {
  }
 
     </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
 
 </head>
 
@@ -561,6 +587,7 @@ body {
     
         
     {% include 'navbar.html' %}
+   
         
 
         <section class="product " id="product">
@@ -760,11 +787,61 @@ body {
               <div class="tab-content" id="policiesTabsContent">
                 <div class="tab-pane fade show active" id="terms" role="tabpanel" aria-labelledby="terms-tab">
                   <!-- Place your terms and conditions content here -->
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                  <p><p>AeroStride Terms and Conditions<br><br>
+
+                    1. Acceptance of Terms
+                    By accessing and using the AeroStride website ("Site") and services, you agree to comply with these terms and conditions. If you do not agree, please refrain from using our services.<br>
+                    
+                    2. Use of the Site
+                    You may use the Site for personal, non-commercial purposes only. Any unauthorized use or modification of the Site's content, images, or materials is prohibited.<br>
+                    
+                    3. Product Information
+                    We strive to provide accurate product information on the Site. However, we do not guarantee the accuracy, completeness, or reliability of any product descriptions, prices, or availability.<br>
+                    
+                    4. Orders and Payments
+                    Placing an order on our Site constitutes an offer to purchase products. We reserve the right to refuse or cancel orders at our discretion. Payments must be made using the provided payment methods.<br>
+                    
+                    5. Shipping and Returns
+                    Please refer to our Return Policy for information regarding returns, exchanges, and shipping procedures.<br>
+                    
+                    6. Intellectual Property
+                    All content on the Site, including but not limited to text, images, logos, and designs, is protected by copyright and other intellectual property laws. You may not reproduce, distribute, or modify any content without our permission.<br>
+                    
+                    7. Privacy Policy
+                    Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.<br>
+                    
+                    8. Disclaimer of Warranties
+                    The Site and its content are provided "as is" and "as available." We make no warranties or representations, express or implied, regarding the accuracy, reliability, or suitability of the Site for any purpose.<br>
+                    
+                    9. Limitation of Liability
+                    In no event shall AeroStride or its affiliates be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with your use of the Site.<br>
+                    
+                    10. Governing Law and Jurisdiction
+                    These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction]. Any disputes shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].<br>
+                    
+                    11. Changes to Terms
+                    We reserve the right to modify these terms and conditions at any time. It is your responsibility to review the terms periodically. Your continued use of the Site after changes are made constitutes your acceptance of the updated terms.<br>
+                    .</p>
                 </div>
                 <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
-                  <!-- Place your return policy content here -->
-                  <p>If you wish to return a product, please follow our return policy guidelines...</p>
+                  <p>Aerostride Return Policy<br><br>
+
+                    At Aerostride, we strive to provide the best products and customer service. If you are not completely satisfied with your purchase, you may return eligible items within 30 days from the date of purchase for a refund or exchange.<br>
+                    
+                    Eligibility Criteria for Returns:<br><br>
+                    
+                    The item must be in its original condition, with all original tags and packaging intact.<br>
+                    Returns must be initiated within 30 days from the date of purchase.<br>
+                    Customized or personalized items are not eligible for return, unless there is a manufacturing defect.<br>
+                    Items marked as final sale are not eligible for return.<br><br>
+                    Return Process:<br><br>
+                    
+                    Contact our customer service team at customer_service_email@example.com to initiate a return.<br>
+                    Provide your order number and details about the item you wish to return.<br>
+                    Our customer service team will provide you with a return authorization and instructions on how to proceed.<br><br>
+                    Refunds:<br><br>
+                    
+                    Refunds will be issued to the original payment method within 7-10 business days after we receive the returned item.</p>
                 </div>
               </div>
             </div>

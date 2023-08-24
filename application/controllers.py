@@ -8,6 +8,7 @@ import json
 from sqlalchemy import or_
 from flask_mail import Mail
 from flask_mail import Message
+from datetime import datetime, timedelta
 
 
 @app.route('/')
@@ -65,18 +66,208 @@ def sneaker():
         if int(i.price)>max:
             max=i.price
     
+    p=Product.query.all()
+    brand=[]
+    for i in p:
+        if i.brand not in brand:
+            brand.append(i.brand)
+    
     if request.method=="GET":
         prod= Product.query.filter_by(category_name = "sneakers")
         
         
         if "user" not in session:
-            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
+            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",b=brand)
         if "user" in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart)
+            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,b=brand)
            
         
     
     if request.method=="POST":
+        print(request.form)
+
+        if "filter" in request.form:
+                print("in filter")
+                d={}
+                
+                if "Men" in request.form:
+                    if 'gender' not in d:
+                        d['gender']=['Men']
+                    else:
+                        d['gender'].append('Men')
+
+                    
+                if "Women" in request.form:
+                    if 'gender' not in d:
+                        d['gender']=['Women']
+                    else:
+                        d['gender'].append('Women')
+                
+                if "Child" in request.form:
+                    if 'gender' not in d:
+                        d['gender']=['Child']
+                    else:
+                        d['gender'].append('Child')
+                
+                if "Unisex" in request.form:
+                    if 'gender' not in d:
+                        d['gender']=['Unisex']
+                    else:
+                        d['gender'].append('Unisex')
+                
+                
+                if '36' in request.form:
+                    if 'size' not in d:
+                        d['size']=['36']
+                    else:
+                        d['size'].append('36')
+                
+                if '37' in request.form:
+                    if 'size' not in d:
+                        d['size']=['37']
+                    else:
+                        d['size'].append('37')
+                
+                if '38' in request.form:
+                    if 'size' not in d:
+                        d['size']=['38']
+                    else:
+                        d['size'].append('38')
+                
+                if '39' in request.form:
+                    if 'size' not in d:
+                        d['size']=['39']
+                    else:
+                        d['size'].append('39')
+                
+                if '40' in request.form:
+                    if 'size' not in d:
+                        d['size']=['40']
+                    else:
+                        d['size'].append('40')
+                
+                if '41' in request.form:
+                    if 'size' not in d:
+                        d['size']=['41']
+                    else:
+                        d['size'].append('41')
+                
+                if '42' in request.form:
+                    if 'size' not in d:
+                        d['size']=['42']
+                    else:
+                        d['size'].append('42')
+            
+            
+                for i in brand:
+                    if i in request.form:
+                        if 'brand' not in d:
+                            d['brand']=[i]
+                        else:
+                            d['brand'].append(i)
+
+            
+
+                p=Product.query.filter_by(category_name='sneakers')
+                filtered=[]
+                for i in p:
+                    if 'gender' in d:
+                        if i.gender in d['gender']:
+                            filtered.append(i)
+                    if 'brand' in d:
+                        if i in filtered:
+                            if i.brand in d['brand']:
+                                pass
+                            else:
+                                filtered.remove(i)
+                        else:
+                            if i.brand in d['brand']:
+                                filtered.append(i)
+                    if 'size' in d:
+                        if i in filtered:
+                            if "36" in d['size']:
+                                if i.size_36>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "37" in d['size']:
+                                if i.size_37>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "38" in d['size']:
+                                if i.size_38>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "39" in d['size']:
+                                if i.size_39>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "40" in d['size']:
+                                if i.size_40>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "41" in d['size']:
+                                if i.size_41>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)
+                            if "42" in d['size']:
+                                if i.size_42>0:
+                                    pass
+                                else:
+                                    filtered.remove(i)                           
+
+                        else:
+                            if "36" in d['size']:
+                                if i.size_36>0:
+                                    filtered.append(i)   
+                            if "37" in d['size']:
+                                if i.size_37>0 and i not in filtered:
+                                    filtered.append(i)   
+                            if "38" in d['size']:
+                                if i.size_38>0 and i not in filtered:
+                                    filtered.append(i)   
+
+                            if "39" in d['size']:
+                                if i.size_39>0 and i not in filtered:
+                                    filtered.append(i)   
+                            if "40" in d['size']:
+                                if i.size_40>0 and i not in filtered:
+                                    filtered.append(i)   
+                            if "41" in d['size']:
+                                if i.size_41>0 and i not in filtered:
+                                    filtered.append(i)   
+
+                            if "42" in d['size']:
+                                if i.size_42>0 and i not in filtered:
+                                    filtered.append(i)
+
+                            if "min" in request.form:
+                                min=request.form['min']
+                                max=request.form['max']
+                                if i in filtered:
+                                    if int(i.price)>=int(min) and int(i.price)<=int(max):  
+                                        pass
+                                    else:
+                                        filtered.remove(i)
+                                else:
+                                    if int(i.price)>=int(min) and int(i.price)<=int(max):
+                                        filtered.append(i)
+
+
+                            
+            
+
+                if "user" not in session:
+                    return render_template('home.html',prod=filtered, max=max, var="Login" ,var1="/user-login",b=brand)
+                if "user" in session:
+                    return render_template('home.html',prod=filtered, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,b=brand)
+
+                return redirect('/sneakers')
 
         if "product" in request.form :
            
@@ -142,7 +333,9 @@ def sneaker():
                 db.session.commit()
 
             return redirect("/sneakers")
-        if "min_price" in request.form:
+        
+
+        '''if "min_price" in request.form:
 
             p_new=[]
             p=Product.query.filter_by(category_name="sneakers").first()
@@ -150,7 +343,7 @@ def sneaker():
                 if int(i.price)>=int(request.form["min_price"]) and int(i.price)<=int(request.form["max_price"]):
                     p_new.append(i) 
             print(p_new)
-            return render_template('home.html',prod=p_new)
+            return render_template('home.html',prod=p_new)'''
         
         if "wishlist" in request.form and "user" in session:
             id=int(request.form['wishlist'])
@@ -212,6 +405,13 @@ def sneaker():
 
             
             
+                    
+                    
+                
+                
+
+
+            
         elif "user" not in session:
             return render_template("home.html", error="You are not logged in.",prod=prod,  max=max)
         return redirect("/sneakers")
@@ -232,13 +432,19 @@ def slide():
     for i in prod:
         if int(i.price)>max:
             max=i.price
+    
+    p=Product.query.all()
+    brand=[]
+    for i in p:
+        if i.brand not in brand:
+            brand.append(i.brand)
     if request.method=="GET":
         prod= Product.query.filter_by(category_name = "slides")
         
         if "user" not in session:
-            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login")
+            return render_template('home.html',prod=prod, max=max, var="Login" ,var1="/user-login",b=brand)
         if "user" in session:
-            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart)
+            return render_template('home.html',prod=prod, max=max, user=session["user"],var="Logout" ,var1="/logout",heart=heart,b=brand)
            
         
     
@@ -530,10 +736,23 @@ def admin_login():
 
 @app.route("/store-manager/product",methods=["GET","POST"])
 def product():
+    current_date = datetime.now()
+    six_months_ago_date = current_date - timedelta(days=6*30) 
+    date_string = six_months_ago_date.strftime('%Y-%m-%d')
+    p=Product.query.filter(Product.date_added<=date_string).all()
+    min=0
+    min_quant=100000
+    for i in p:
+        total_q = db.session.query(db.func.sum(Purchase.quantity)).filter(Purchase.product == i.id).scalar()
+        if total_q:
+            if total_q<min_quant:
+                min_quant=total_q
+                min=i.id
+
     if request.method=="GET":
         prod = Product.query.all()
         order = Order.query.all()
-        return render_template("product.html",prod=prod,order=order)
+        return render_template("product.html",prod=prod,order=order,min=min)
     if request.method=="POST":
         print("hey")
         if "process" in request.form:
@@ -692,13 +911,13 @@ def edit_product(product_id):
 @app.route("/cart", methods=["GET","POST"])
 def cart():
     total = 0
+    
     if "user" in session: 
         user = User.query.filter_by(name=session["user"]).first() 
         cart = Cart.query.filter_by(user_id=user.id)
         products=[]
         rate_list=[]
         for i in cart:
-            
             el=[]
             p=Product.query.filter_by(id = i.product_id).first()
             r=int(i.price*i.quantity)
@@ -719,9 +938,25 @@ def cart():
                 print(rate_list,total)
                 return render_template("cart.html",error="",var="Login",var1="/user-login",products = products, total = total)
             if "user" in session:
-                return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total)
+                return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
             
         else:
+            if "reward" in request.form:
+                a = User.query.filter_by(name=session["user"]).first()
+                r=a.reward
+                a.reward=0
+                db.session.commit()
+                print(a.reward)
+                return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward,r=r)
+            if "discount" in request.form:
+                a = User.query.filter_by(name=session["user"]).first()
+                coup=request.form['disc_coup']
+                if coup=="SNEAKER200":
+                    d="200"
+                if coup=="SLIDE10":
+                    d="10"
+                print(a.reward)
+                return render_template("cart.html",error="",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward,r=r,d=d)
             if "remove" in request.form:
                 id = request.form['remove']
                 cart_del=Cart.query.filter_by(id = int(id)).first()
@@ -1035,31 +1270,42 @@ def search(val):
 
 @app.route('/account', methods=["GET","POST"])
 def account():
-
+    a=User.query.filter_by(name=session['user']).first()
     if request.method=="GET":
         a=User.query.filter_by(name=session['user']).first()
         order=Order.query.filter_by(user_id=a.id)
-        purchase=Purchase.query.filter_by(customer_user=a.id)
-        main=[]
-        lst=[]
+        o_id=[]
         prod=[]
-        reward=0
+        lst=[]
+        main=[]
+        prod=[]
+
         for i in order:
-            reward+=i.total_price
+            lst=[]
+            print(i.id)
             lst.append(i.id)
             lst.append(i.date_added)
             lst.append(i.total_price)
             lst.append(i.status)
-            for j in purchase:
-                if i.id==j.order_id:
-                    b=Product.query.filter_by(id=j.product).first()
-                    prod.append([b.id,b.brand,b.name,b.price,j.size])
+            p=Purchase.query.filter_by(order_id=i.id)
+            
+            prod=[]
+            for i in p:  
+                print(i.id)             
+                p1=Product.query.filter_by(id=i.id).first()
+                prod.append([i.product,p1.brand,p1.name,p1.price,i.size])
             lst.append(prod)
+
             main.append(lst)
-        reward=reward*(0.01)
+        print(len(main))
+        print(main[0])
+        reward=a.reward
+
+        
+        db.session.commit()
 
 
-        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main,reward=int(reward))
+        return render_template("account_page.html",var="Logout" ,var1="/logout",u=a,main=main)
     
     if request.method=="POST":
         if "help" in request.form:
@@ -1071,18 +1317,52 @@ def account():
             db.session.add(i)
             db.session.commit()
             send_email(email, message)
-        return redirect("/account")
+            return redirect("/account")
+        
+        if "return" in request.form:
+            user=User.query.filter_by(name=session['user']).first()
+            id=request.form['return']
+            o=Order.query.filter((Order.user_id == user.id) & (Order.id == int(id))).first()
+            o.returned="yes"
+            o.status="In return process"
+            db.session.commit()
+
+            t=Payments.query.filter_by(order_id=int(id)).first()
+            t.refund="yes"
+            db.session.commit()
+
+            return redirect("/account")
+        
+        if "cancel" in request.form:
+            user=User.query.filter_by(name=session['user']).first()
+            id=request.form['cancel']
+            o=Order.query.filter((Order.user_id == user.id) & (Order.id == int(id))).first()
+            o.cancelled="yes"
+            o.status="Cancelled"
+            db.session.commit()
+
+            t=Payments.query.filter_by(order_id=int(id)).first()
+            t.refund="yes"
+            db.session.commit()
+
+            return redirect("/account")
+      
+
+
 
 
 
 @app.route('/wishlist', methods=["GET","POST"])
 def wishlist():
-    id= User.query.filter_by(name=session['user']).first()
-    w=WishList.query.filter_by(user_id=id.id)
-    lst=[]
-    for i in w:
-        p=Product.query.filter_by(id=i.product_id).first()
-        lst.append(p)
+    if "user" in session:
+        id= User.query.filter_by(name=session['user']).first()
+        w=WishList.query.filter_by(user_id=id.id)
+        lst=[]
+        for i in w:
+            p=Product.query.filter_by(id=i.product_id).first()
+            lst.append(p)
+    if "user" not in session:
+        return render_template("wishlist.html",var="Login" ,var1="/user-login",err="You have to Login.")
     if request.method=="GET":
         if "user" in session:
             a=User.query.filter_by(name=session['user']).first()
@@ -1193,6 +1473,9 @@ def save_payment():
     if "user" in session: 
         user = User.query.filter_by(name=session["user"]).first() 
         cart = Cart.query.filter_by(user_id=user.id)
+        order = Order.query.filter_by(user_id=user.id)
+        
+
         products=[]
         rate_list=[]
         for i in cart:
@@ -1224,32 +1507,56 @@ def save_payment():
         size=size.size
         print(size, product.id)
         if size==36:
-            product.size_36 -= int(count)
-            db.session.commit()
+            if count<=product.size_36:
+                product.size_36-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
+
+            
         if size==37:
-            product.size_37 -= int(count)
-            db.session.commit()
+            if count<=product.size_37:
+                product.size_37-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
 
         if size==38:
-            product.size_38 -= int(count)
-            db.session.commit()
+            if count<=product.size_38:
+                product.size_38-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
         if size==39:
-            product.size_39 -= int(count)
-            db.session.commit()
+            if count<=product.size_39:
+                product.size_39-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
         if size==40:
-            product.size_40 -= int(count)
-            db.session.commit()
+            if count<=product.size_40:
+                product.size_40-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
         if size==41:
-            product.size_41 -= int(count)
-            db.session.commit()
+            if count<=product.size_41:
+                product.size_41-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
         if size==42:
-            product.size_42 -= int(count)
-            db.session.commit()
+            if count<=product.size_42:
+                product.size_42-= int(count)
+                db.session.commit()
+            else:                 
+                return render_template("cart.html",error="Quantity added more than stock available.",var="Logout" ,var1="/logout",products = products, total = total,reward=user.reward)
         purhcase=Purchase(product=product.id,customer_user=user.id,quantity=count,price=rate,order_id=order.id,size=size)
         db.session.add(purhcase)
         db.session.commit()   
 
     
+
     for i in cart:
         db.session.delete(i)
         db.session.commit()
@@ -1259,8 +1566,11 @@ def save_payment():
     t1=Payments(payment_id=p_id,payment_method=a['method'],order_id=order.id,total_price=a['amount']/100)
     db.session.add(t1)
     db.session.commit()
-    
 
+    r=user.reward
+    r+=round(order.total_price*0.01)
+    user.reward=r
+    db.session.commit()
 
 
     return 'Payment details saved'

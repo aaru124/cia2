@@ -124,10 +124,10 @@
                 <div style="text-align: center;">
                     <div class="col">
                 <span id="reward"></span>
-                <span style="color:rgba(26, 1, 48, 0.952); font-size: 20px;">{{reward}} points &#9733;</span>
+                <span style="color:rgba(26, 1, 48, 0.952); font-size: 20px;">{{u.reward}} points &#9733;</span>
             </div>
         
-            <div class="slider"><input id="slide" type="range" disabled min="0" max="2000" value="{{reward}}" style="width: 700px;"><p id="rangeValue" style="color: #000;"></p></div> 
+            <div class="slider"><input id="slide" type="range" disabled min="0" max="2000" value="{{u.reward}}" style="width: 700px;"><p id="rangeValue" style="color: #000;"></p></div> 
         </div>
                 <p><span style="font-weight: bold;" >Email:</span> {{u.email}}</p>
                 <p><span style="font-weight: bold;" >Address:</span> {{u.address}}</p>
@@ -139,12 +139,22 @@
             {% for lst in main %}
             <div class="order ">
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <p style="display: inline;"><span style="font-weight: bold;" >ID:</span> {{lst[0]}} 
                         </p>
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-primary" style="display: flex; height: 20px; align-items: center; justify-content: space-evenly; width: 80px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;font-size: 15px;" data-bs-toggle="modal" data-bs-target="#helpModal">Help ?</button>
+
+                    </div>
+                    <div class="col-md-2">
+                        {% if lst[3]=="In Process" or lst[3]=="Shipped" %}
+                        <button type="button" class="btn btn-primary" style="display: flex; height: 20px; align-items: center; justify-content: space-evenly; width: 80px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;font-size: 15px;" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button>
+                        {% elif lst[3]=="Delivered" %}
+                        <button type="button" class="btn btn-primary" style="display: flex; height: 20px; align-items: center; justify-content: space-evenly; width: 80px; font-size:medium; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;font-size: 15px;" data-bs-toggle="modal" data-bs-target="#myModal">Return</button>
+                        
+
+                        {% endif %}
 
                     </div>
                     
@@ -153,7 +163,7 @@
                 <p><span style="font-weight: bold;" >Date:</span> {{lst[1]}} </p>
                 <p><span style="font-weight: bold;" >Price:</span> Rs. {{lst[2]}}</p>
                 <p><span style="font-weight: bold;" >Status:</span> {{lst[3]}}</p>
-                {% for i in lst[4]%}
+                {% for i in lst[4] %}
                 <div class = "card mt-4" style=" margin-inline: auto;   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s; border-radius: 5px; margin-left: auto;margin-right: auto;text-align: center;">
                     <section style="height: 100%; width: 60%; min-width: 380px;">
                         <div class=" d-flex align-items-center " style="height: 100%;"></div>
@@ -163,26 +173,21 @@
                     <div class="card-footer ">
                         <div class="row">
                             <div class="col-md-10">
-                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;text-align: left;"> {{i[1]}}</p>
-                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[2]}}   </p>
-                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[4]}}   </p>
+                                <p class="product__info--brand" style="margin-top: 1.25rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1rem; color: #e36209; text-transform: uppercase;text-align: left;">{{i[1]}}</p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[2]}}</p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1.25rem; color: #000;text-align: left;"> {{i[3]}}   </p>
 
-                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1rem; color: #000;text-align: left;font-weight: 700;"> {{i[3]}}   </p>
+                                <p class="product__info--title" style="margin-block: 1rem; font-size: 1rem; color: #000;text-align: left;font-weight: 700;">{{i[4]}} </p>
                             </div>
                            <div class="col-md-2">
-                            <div class="flex-container mt-4" style="display: flex; justify-content: flex-end">
-                                <button type="button" style=" display: flex; height: 50px; align-items: center; justify-content: space-evenly; width: 120px; padding-block: 1.125rem; background-color: #67c5eb; font-weight: 700; border-radius: 8px;">Return</button>
-                            </div>
+                            
                            </div>
                         </div>
                         
                     </div>
                 </div>
-                                
-             
-                    
-                    
-                {% endfor %}
+                {% endfor %}            
+
                 </div>
                 <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -204,6 +209,107 @@
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary" name="help" value="{{lst[0]}}">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Return request</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <p>Choose reason:</p>
+                                    <hr class="my-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option1" value="option1" checked>
+                                            Defective product
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option2" value="option2">
+                                            Wrong size
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option3" value="option3">
+                                            Unsatisfactory quality
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option4" value="option4">
+                                            Other
+                                        </label>
+                                        <input type="text" class="form-control" id="reason_other" name="reason_other" style="height:200px; margin-top: 20px; display: none;">
+                                    </div>
+                
+                                </div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="return" value="{{lst[0]}}">Initiate Refund</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Cancel request</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <p>Choose reason:</p>
+                                    <hr class="my-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option1" value="option1" checked>
+                                            Defective product
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option2" value="option2">
+                                            Wrong size
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option3" value="option3">
+                                            Unsatisfactory quality
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="optionsRadios" id="option4" value="option4">
+                                            Other
+                                        </label>
+                                        <input type="text" class="form-control" id="reason_other" name="reason_other" style="height:200px; margin-top: 20px; display: none;">
+                                    </div>
+                
+                                </div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="cancel" value="{{lst[0]}}">Initiate Cancellation</button>
                             </div>
                         </div>
                     </form>
@@ -232,6 +338,8 @@
             </div>
         </div>
     </div>
+
+    
 
     
 

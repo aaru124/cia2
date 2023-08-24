@@ -117,6 +117,7 @@ body {
         {% if total==0 %} <img src="../static/empty.png" alt="Cart is Empty" style="height: 700px; width: 500px; text-align: center;margin-top: -20%;margin-left: 27%;">
         <h4 style=" text-align: center;margin-top: -20%; color: #f3f3e5;">Cart is Empty. <a href="/" style="color: #2d1303;">Shop Now!</a></h4>
 {% endif %}
+
         {% for product,count,price,size in products %}
         
         <tbody>
@@ -141,9 +142,35 @@ body {
         </tbody>
        {% endfor %}
       </table>
+
       {% if total!=0 %} 
+      <form method="post">
+        <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="discount" class="form-label">Coupon code</label>
+                <div class="input-group">
+                  <select class="form-select" id="size" name="disc_coup">
+                    
+                    <option value="SLIDE10" name="disc_coup">SLIDE10</option>
+                    <option value="SNEAKER200" name="disc_coup">SNEAKER200</option>
+                    
+                  </select>
+                    <button type="text" class="btn btn-sm btn-primary" id="applyBtn" style="margin-left: 20px;" name="discount">Apply</button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                 
+                <button type="text" class="btn btn-sm btn-primary" id="rewardBtn" style="margin-top: 32px; margin-left:80px" name="reward">redeem</button>
+                <label style="font-size: 15px; color: #2d1303; margin-left:60px">You have {{reward}} points</label>
+
+            </div>
+        </div>
+    </div>
+      </form>
+      
       {% set n_price=total %}
-      <div class="container mt-5">
+      <div class="container mt-2">
         <div class="card mb-3">
           <div class="card-header">
             Order Summary
@@ -176,11 +203,79 @@ body {
                   {% endif %}
                   
                 </tr>
+                {% if r and d!="200" and d!="10" %}
+
+                <tr>
+                  <th scope="row">Reward Points</th>
+                  
+                  <td >- Rs. <span id="reward" style="color: green;">{{r}}</span></td>
+                </tr>
+                
+                <tr>
+                  <th scope="row">Total</th>
+                  {% set total_p=n_price+gst+shipping-r %}
+                  <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+                </tr>
+                {% elif d=="200" %}
+                <tr>
+                  <th scope="row">Discount(SNEAKER200)</th>
+                  
+                  <td >- Rs. <span id="reward" style="color: green;">{{200}}</span></td>
+                </tr>
+                
+                <tr>
+                  <th scope="row">Total</th>
+                  {% set total_p=n_price+gst+shipping-200 %}
+                  <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+                </tr>
+              {% elif d=="10"  %}
+              <tr>
+                <th scope="row">Discount(SLIDE10)</th>
+                
+                <td >- Rs. <span id="reward" style="color: green;">{{0.1*n_price}}</span></td>
+              </tr>
+              
+              <tr>
+                <th scope="row">Total</th>
+                {% set total_p=n_price+gst+shipping-0.1*n_price %}
+                <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+              
+              </tr>
+                <tr>
+                  {% elif d=="10" and r %}
+              <tr>
+                <th scope="row">Discount(SLIDE10)</th>
+                
+                <td >- Rs. <span id="reward" style="color: green;">{{0.1*n_price}}</span></td>
+              </tr>
+              
+              <tr>
+                <th scope="row">Total</th>
+                {% set total_p=n_price+gst+shipping-0.1*n_price-r %}
+                <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+              
+              </tr>
+              {% elif d=="200" and r %}
+              <tr>
+                <th scope="row">Discount(SNEAKER200)</th>
+                
+                <td >- Rs. <span id="reward" style="color: green;">{{200}}</span></td>
+              </tr>
+              
+              <tr>
+                <th scope="row">Total</th>
+                {% set total_p=n_price+gst+shipping-200-r %}
+                <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
+              
+              </tr>
+              {% else %}
+                <tr>
                 <tr>
                   <th scope="row">Total</th>
                   {% set total_p=n_price+gst+shipping %}
                   <td >Rs. <span id="totalPrice">{{total_p}}</span></td>
                 </tr>
+                {% endif %}
                 
               </tbody>
             </table>

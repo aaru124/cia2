@@ -4,7 +4,7 @@ from application.database import db
 
 
 class User(db.Model):
-    __tablename__ = "sneakers_users"
+    __tablename__ = "aerostride_users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, unique=False, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -15,6 +15,7 @@ class User(db.Model):
     contact_no = db.Column(db.Integer, nullable=False)
     email = db.Column(db.String, nullable=False)
     store_name =db.Column(db.Integer, nullable=False, default="User No Store")
+    reward =db.Column(db.Integer, nullable=False, default=0)
 
 
 

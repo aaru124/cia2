@@ -56,50 +56,12 @@
         <div class="col-md-2">
             <form method="post">
                 <div class="text-center" >
-                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseBox" style="background-color: darkslategrey;color:cornsilk">
+                    <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#filterModal"style="background-color: darkslategrey;color:cornsilk">
                         Apply Filters
                      </button>
                 </div>
-               
+              </form>
              
-                 <div class="collapse" id="collapseBox" >
-                     <div class="filter-card">
-     
-                         <div class="card-body">
-                             <table class="table" style="width: 200px; margin: 0;">
-                                 <tbody>
-                                     <tr align="left">
-                                         <td>
-                                             <label for="price" style="width: 100px;">Price Range</label>
-                                         </td>
-                                         <td>:</td>
-                                         <td>
-                                             <input type="number" style="margin: 0; width: 100px;" name="min_price" placeholder="Min-Price" value="{{ min_price }}">
-                                         </td>
-                                         <td>-</td>
-                                         <td>
-                                             <input type="number"  style="margin: 0; width: 100px;" name="max_price" placeholder="Max-Price" value="{{ max_price }}">
-                                         </td>
-                                     </tr>
-                                     <tr align="left" >
-                                        <td colspan="2">
-                                            <button class="btn btn-success" type="submit" name="min_price">
-                                                Apply
-                                             </button>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        
-                                     </tr>
-                                     
-                                 </tbody>
-                             </table>
-            </form>
-            
-                     </div>
-                 </div>
-             </div>
         </div>
     </div>
     <div class="row">
@@ -110,7 +72,70 @@
             {% if sort_name %}<div class ="row mb-3"> <h5>Sorting by "{{sort_name}}"</h5> </div>{% endif %}
             
             <div class="row mt-4" >
-                {% if not prod %} <p style="margin-left: 2px;">No products available right now.</p> {% endif %}
+                {% if not prod %} <p style="margin-left: 2px;">No products available right now.</p> 
+                <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <form method="post">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                            Filter
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <ul class="list-group">
+                                  <p>Gender</p>
+                                  <li class="list-group-item"><input type="checkbox" id="category1" name="Men" value="Men"> Men</li>
+                                  <li class="list-group-item"><input type="checkbox" id="category2" name="Women" value="Women"> Women</li>
+                                  <li class="list-group-item"><input type="checkbox" id="category3" name="Child" value="Child"> Child</li>
+                                  <li class="list-group-item"><input type="checkbox" id="category4" name="Unisex" value="Unisex"> Unisex</li>
+                              </ul>
+                          </div>
+                          <hr class="my-3">
+                          <div class="modal-body">
+                              <ul class="list-group">
+                                  <p>Size</p>
+                                  <li class="list-group-item"><input type="checkbox" id="size36" name="36" value="36"> 36</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size37" name="37" value="37"> 37</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size38" name="38" value="38"> 38</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size39" name="40" value="39"> 39</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size40" name="41" value="40"> 40</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size41" name="42" value="41"> 41</li>
+                                  <li class="list-group-item"><input type="checkbox" id="size42" name="43" value="42"> 42</li>
+                              </ul>
+                          </div>
+                          <hr class="my-3">
+              
+                          <div class="modal-body">
+                              <ul class="list-group">
+                                  <p>Brand</p>
+                                  {% for i in b %}
+                                  <li class="list-group-item"><input type="checkbox" id="category1" name="{{i}}" value="{{i}}"> {{i}}</li>
+                                  {% endfor %}
+                              </ul>
+                          </div>
+                          <hr class="my-3">
+              
+                          <div class="modal-body">
+                              <p>Price</p>
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label for="min_price" class="form-label">Min:</label> 
+                                  <input type="number" class="form-control" id="minPrice" placeholder="Min Price" name="min" value=0>
+                                  <label for="max_price" class="form-label">Max:</label>
+                                  <input type="number" class="form-control" id="maxPrice" placeholder="Max Price" name="max" value={{max}}>
+                                  </div>
+                              </div>
+                          </div>
+              
+                          <div class="modal-footer">
+                              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" style="background-color: rgb(2, 35, 2);color: antiquewhite;" name="filter" value="hey">Apply Filter</button>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
+              </div>
+                {% endif %}
                 
                 {% for i in prod %}
       
@@ -167,6 +192,68 @@
                           {% endif %}
                         </div>
                     </form>
+                    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <form method="post">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                Filter
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <ul class="list-group">
+                                      <p>Gender</p>
+                                      <li class="list-group-item"><input type="checkbox" id="category1" name="Men" value="Men"> Men</li>
+                                      <li class="list-group-item"><input type="checkbox" id="category2" name="Women" value="Women"> Women</li>
+                                      <li class="list-group-item"><input type="checkbox" id="category3" name="Child" value="Child"> Child</li>
+                                      <li class="list-group-item"><input type="checkbox" id="category4" name="Unisex" value="Unisex"> Unisex</li>
+                                  </ul>
+                              </div>
+                              <hr class="my-3">
+                              <div class="modal-body">
+                                  <ul class="list-group">
+                                      <p>Size</p>
+                                      <li class="list-group-item"><input type="checkbox" id="size36" name="36" value="36"> 36</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size37" name="37" value="37"> 37</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size38" name="38" value="38"> 38</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size39" name="40" value="39"> 39</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size40" name="41" value="40"> 40</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size41" name="42" value="41"> 41</li>
+                                      <li class="list-group-item"><input type="checkbox" id="size42" name="43" value="42"> 42</li>
+                                  </ul>
+                              </div>
+                              <hr class="my-3">
+                  
+                              <div class="modal-body">
+                                  <ul class="list-group">
+                                      <p>Brand</p>
+                                      {% for i in b %}
+                                      <li class="list-group-item"><input type="checkbox" id="category1" name="{{i}}" value="{{i}}"> {{i}}</li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>
+                              <hr class="my-3">
+                  
+                              <div class="modal-body">
+                                  <p>Price</p>
+                                  <div class="row">
+                                      <div class="col-md-6">
+                                          <label for="minPrice" class="form-label">Min:</label> 
+                                      <input type="number" class="form-control" id="minPrice" placeholder="Min Price" name="min_price">
+                                      <label for="maxPrice" class="form-label">Max:</label>
+                                      <input type="number" class="form-control" id="maxPrice" placeholder="Max Price" name="max_price" value="{{max}}">
+                                      </div>
+                                  </div>
+                              </div>
+                  
+                              <div class="modal-footer">
+                                  <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary" style="background-color: rgb(2, 35, 2);color: antiquewhite;" name="filter" value="hey">Apply Filter</button>
+                              </div>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
                     <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -179,25 +266,25 @@
                                 <div class="mb-3">
                                   <label for="size" class="form-label">Size:</label>
                                   <select class="form-select" id="size" name="size">
-                                    {% if i.size_36 %}
+                                    {% if i.size_36>0 %}
                                     <option value="36">36</option>
                                     {% endif %}
-                                    {% if i.size_37 %}
+                                    {% if i.size_37>0 %}
                                     <option value="37">37</option>
                                     {% endif %}
-                                    {% if i.size_38 %}
+                                    {% if i.size_38>0 %}
                                     <option value="38">38</option>
                                     {% endif %}
-                                    {% if i.size_39 %}
+                                    {% if i.size_39>0 %}
                                     <option value="39">39</option>
                                     {% endif %}
-                                    {% if i.size_40 %}
+                                    {% if i.size_40>0 %}
                                     <option value="40">40</option>
                                     {% endif %}
-                                    {% if i.size_41 %}
+                                    {% if i.size_41>0 %}
                                     <option value="41">41</option>
                                     {% endif %}
-                                    {% if i.size_42 %}
+                                    {% if i.size_42>0 %}
                                     <option value="42">42</option>
                                     {% endif %}
                                   </select>
@@ -253,12 +340,64 @@
           </ul>
           <div class="tab-content" id="policiesTabsContent">
             <div class="tab-pane fade show active" id="terms" role="tabpanel" aria-labelledby="terms-tab">
-              <!-- Place your terms and conditions content here -->
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+              
+              <p><p>AeroStride Terms and Conditions<br><br>
+
+                1. Acceptance of Terms
+                By accessing and using the AeroStride website ("Site") and services, you agree to comply with these terms and conditions. If you do not agree, please refrain from using our services.<br>
+                
+                2. Use of the Site
+                You may use the Site for personal, non-commercial purposes only. Any unauthorized use or modification of the Site's content, images, or materials is prohibited.<br>
+                
+                3. Product Information
+                We strive to provide accurate product information on the Site. However, we do not guarantee the accuracy, completeness, or reliability of any product descriptions, prices, or availability.<br>
+                
+                4. Orders and Payments
+                Placing an order on our Site constitutes an offer to purchase products. We reserve the right to refuse or cancel orders at our discretion. Payments must be made using the provided payment methods.<br>
+                
+                5. Shipping and Returns
+                Please refer to our Return Policy for information regarding returns, exchanges, and shipping procedures.<br>
+                
+                6. Intellectual Property
+                All content on the Site, including but not limited to text, images, logos, and designs, is protected by copyright and other intellectual property laws. You may not reproduce, distribute, or modify any content without our permission.<br>
+                
+                7. Privacy Policy
+                Your privacy is important to us. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.<br>
+                
+                8. Disclaimer of Warranties
+                The Site and its content are provided "as is" and "as available." We make no warranties or representations, express or implied, regarding the accuracy, reliability, or suitability of the Site for any purpose.<br>
+                
+                9. Limitation of Liability
+                In no event shall AeroStride or its affiliates be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with your use of the Site.<br>
+                
+                10. Governing Law and Jurisdiction
+                These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction]. Any disputes shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].<br>
+                
+                11. Changes to Terms
+                We reserve the right to modify these terms and conditions at any time. It is your responsibility to review the terms periodically. Your continued use of the Site after changes are made constitutes your acceptance of the updated terms.<br>
+                
+</p>
             </div>
             <div class="tab-pane fade" id="return" role="tabpanel" aria-labelledby="return-tab">
-              <!-- Place your return policy content here -->
-              <p>If you wish to return a product, please follow our return policy guidelines...</p>
+             
+              <p>Aerostride Return Policy<br><br>
+
+                At Aerostride, we strive to provide the best products and customer service. If you are not completely satisfied with your purchase, you may return eligible items within 30 days from the date of purchase for a refund or exchange.<br>
+                
+                Eligibility Criteria for Returns:<br><br>
+                
+                The item must be in its original condition, with all original tags and packaging intact.<br>
+                Returns must be initiated within 30 days from the date of purchase.<br>
+                Customized or personalized items are not eligible for return, unless there is a manufacturing defect.<br>
+                Items marked as final sale are not eligible for return.<br><br>
+                Return Process:<br><br>
+                
+                Contact our customer service team at customer_service_email@example.com to initiate a return.<br>
+                Provide your order number and details about the item you wish to return.<br>
+                Our customer service team will provide you with a return authorization and instructions on how to proceed.<br><br>
+                Refunds:<br><br>
+                
+                Refunds will be issued to the original payment method within 7-10 business days after we receive the returned item.</p>
             </div>
           </div>
         </div>

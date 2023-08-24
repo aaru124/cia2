@@ -124,6 +124,7 @@ body {
     <div class="wishlist-container mx-4" >
      
         <h2 class="mb-4 custom-font" style="text-align: center;"><i class="fas fa-heart"></i> My Wishlist</h2>
+        {% if err %}<p style="font-weight: bold;font-size: 15px;text-align: center;color: red;">{{err}}</p>{% endif %}
         {% for i in w %}
         <div class="card mb-4">
                 
